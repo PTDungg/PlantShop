@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SigupActivity">
+    tools:context=".ui.auth.SigupActivity">
 
 
     <ImageView
@@ -164,7 +164,7 @@
         android:layout_gravity="center"
         android:backgroundTint="@color/green"
         android:fontFamily="@font/roboto_medium"
-        android:text="Đăng nhập"
+        android:text="Đăng ký"
         android:textColor="@android:color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "872559319956",
+    "project_id": "plant-shop-6caa0",
+    "storage_bucket": "plant-shop-6caa0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872559319956:android:9ced7e80b7706cc8b34d81",
+        "android_client_info": {
+          "package_name": "com.example.plantshop"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQv_rLXpg1trxd7gWuv4VqyFBQMjRjxZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

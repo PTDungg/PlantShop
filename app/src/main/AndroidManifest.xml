@@ -13,21 +13,23 @@
         android:theme="@style/Theme.PlantShop"
         tools:targetApi="31">
         <activity
-            android:name=".SigupActivity"
+            android:name=".ui.user.home.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.auth.SigupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".WelcomeActivity"
+            android:name=".ui.auth.WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.auth.SplashActivity"
             android:exported="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

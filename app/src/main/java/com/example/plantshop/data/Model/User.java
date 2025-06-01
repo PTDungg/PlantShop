@@ -1,4 +1,4 @@
-package com.example.plantshop.Model;
+package com.example.plantshop.data.Model;
 
 public class User {
     private String name;

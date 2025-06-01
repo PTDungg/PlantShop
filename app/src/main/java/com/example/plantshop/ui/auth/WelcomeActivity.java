@@ -1,4 +1,4 @@
-package com.example.plantshop;
+package com.example.plantshop.ui.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,15 +6,15 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.plantshop.databinding.ActivityWelcomeBinding;
+import com.example.plantshop.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
-
+    private FirebaseAuth mAuth;
     private Button btnLogIn, btnSiUp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         btnLogIn = findViewById(R.id.btnLogIn);
         btnSiUp = findViewById(R.id.btnSignUp);
+
 
         btnLogIn.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
