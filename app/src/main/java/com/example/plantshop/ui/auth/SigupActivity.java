@@ -18,12 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.plantshop.R;
-import com.example.plantshop.ui.user.home.HomeActivity;
+import com.example.plantshop.ui.user.home.HomeUserActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SigupActivity extends AppCompatActivity {
-    UserViewModel userViewModel;
+    AuthViewModel authViewModel;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private static final String TAG = "SigupActivity";
@@ -50,15 +50,15 @@ public class SigupActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
-        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.getUser().observe(this, user -> {
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
+        authViewModel.getUser().observe(this, user -> {
             if (user != null) {
                 Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, HomeActivity.class));
+                startActivity(new Intent(this, HomeUserActivity.class));
                 finish();
             }
         });
-        userViewModel.getError().observe(this, error -> {
+        authViewModel.getError().observe(this, error -> {
             Toast.makeText(this, "Lỗi: " + error, Toast.LENGTH_SHORT).show();
         });
 
@@ -80,7 +80,7 @@ public class SigupActivity extends AppCompatActivity {
                 Toast.makeText(SigupActivity.this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
                 return;
             }
-            userViewModel.signUp(email,password,name);
+            authViewModel.signUp(email,password,name);
 
         });
 

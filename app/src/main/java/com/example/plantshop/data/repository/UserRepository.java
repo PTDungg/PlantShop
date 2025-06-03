@@ -1,5 +1,6 @@
 package com.example.plantshop.data.repository;
 
+import com.example.plantshop.utils.RoleManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FieldValue;
@@ -39,7 +40,7 @@ public class UserRepository {
         userMap.put("uid", user.getUid());
         userMap.put("email", user.getEmail());
         userMap.put("name", name);
-        userMap.put("role", "user");
+        userMap.put("role", RoleManager.Role.USER);
         userMap.put("createdAt", FieldValue.serverTimestamp());
 
         db.collection("users")

@@ -9,7 +9,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantshop.R;
-import com.example.plantshop.ui.user.home.HomeActivity;
+import com.example.plantshop.ui.user.home.HomeUserActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +36,7 @@ public class SplashActivity extends AppCompatActivity {
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if (currentUser != null) {
                 // Nếu đã đăng nhập, chuyển tới HomeFragment
-                Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
+                Intent intent = new Intent(SplashActivity.this, HomeUserActivity.class);
                 startActivity(intent);
             } else {
                 // Nếu chưa đăng nhập, chuyển tới màn hình Welcome
@@ -49,7 +49,7 @@ public class SplashActivity extends AppCompatActivity {
 //            Intent intent = new Intent(SplashActivity.this, WelcomeActivity.class);
 //            startActivity(intent);
 //            finish();
-//        }, 3000);
+//        }, 2000);
     }
 
 }
