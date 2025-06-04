@@ -18,6 +18,10 @@ public class UserRepository {
         db = FirebaseFirestore.getInstance();
     }
 
+    public interface SignUpCallback {
+        void onSuccess(FirebaseUser user);
+        void onFailure(String errorMessage);
+    }
 
     public void signUp(String email, String password, String name, SignUpCallback callback) {
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -37,11 +41,11 @@ public class UserRepository {
 
     private void saveUserToFirestore(FirebaseUser user, String name, SignUpCallback callback) {
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("uid", user.getUid());
+        userMap.put("uid", "user"+user.getUid());
         userMap.put("email", user.getEmail());
         userMap.put("name", name);
         userMap.put("role", RoleManager.Role.USER);
-        userMap.put("createdAt", FieldValue.serverTimestamp());
+//        userMap.put("createdAt", FieldValue.serverTimestamp());
 
         db.collection("users")
                 .document(user.getUid())
@@ -50,9 +54,6 @@ public class UserRepository {
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
-    public interface SignUpCallback {
-        void onSuccess(FirebaseUser user);
-        void onFailure(String errorMessage);
-    }
+
 }
 

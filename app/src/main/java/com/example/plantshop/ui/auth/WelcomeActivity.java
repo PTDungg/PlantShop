@@ -29,29 +29,23 @@ public class WelcomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_welcome);
 
-        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
-
-
         btnLogIn = findViewById(R.id.btnLogIn);
         btnSiUp = findViewById(R.id.btnSignUp);
         txtGuest = findViewById(R.id.txtGuest);
-
 
         btnLogIn.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this,LoginActivity.class);
             startActivity(intent);
         });
-
         btnSiUp.setOnClickListener(v -> {
             Intent intent = new Intent(WelcomeActivity.this,SigupActivity.class);
             startActivity(intent);
         });
-
         txtGuest.setOnClickListener(v -> {
             authViewModel.loginAsGuest(WelcomeActivity.this);
         });
 
-
+        authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         authViewModel.getGuestLoginState().observe(this, success -> {
             if (success) {
                 RoleManager.setCurrentRole(RoleManager.Role.GUEST);
@@ -60,7 +54,6 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         authViewModel.getError().observe(this, error -> {
             if (error != null) {
                 Toast.makeText(this, "Lỗi: " + error, Toast.LENGTH_SHORT).show();
