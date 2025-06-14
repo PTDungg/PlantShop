@@ -1,16 +1,29 @@
 package com.example.plantshop.data.Model;
 
 public class User {
+    private String uid;
     private String name;
     private String email;
-    private String password;
-    private int phone;
+    private String phone;
+    private String address;
 
-    public User(String name, String email, String password, int phone) {
+    public User() {
+    }
+
+    public User(String uid, String name, String email, String phone, String address) {
+        this.uid = uid;
         this.name = name;
         this.email = email;
-        this.password = password;
         this.phone = phone;
+        this.address = address;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getName() {
@@ -29,20 +42,19 @@ public class User {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
-}
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+}
