@@ -1,4 +1,4 @@
-package com.example.plantshop;
+package com.example.plantshop.ui.user.home;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
+import com.example.plantshop.R;
 
 import java.util.HashMap;
 import java.util.Map;
