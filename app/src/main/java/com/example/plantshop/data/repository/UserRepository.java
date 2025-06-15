@@ -1,17 +1,18 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.utils.RoleManager;
+import com.example.plantshop.data.Model.User;
+import com.example.plantshop.utils.RoleManager; // Đảm bảo RoleManager tồn tại và đúng package
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions; // Import SetOptions
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class UserRepository {
-    private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
+    private final FirebaseAuth mAuth;
+    private final FirebaseFirestore db;
 
     public UserRepository() {
         mAuth = FirebaseAuth.getInstance();
@@ -20,6 +21,16 @@ public class UserRepository {
 
     public interface SignUpCallback {
         void onSuccess(FirebaseUser user);
+        void onFailure(String errorMessage);
+    }
+
+    public interface LoadUserCallback {
+        void onSuccess(User user);
+        void onFailure(String errorMessage);
+    }
+
+    public interface UpdateUserCallback {
+        void onSuccess();
         void onFailure(String errorMessage);
     }
 
@@ -41,11 +52,12 @@ public class UserRepository {
 
     private void saveUserToFirestore(FirebaseUser user, String name, SignUpCallback callback) {
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("uid", "user"+user.getUid());
+        userMap.put("uid", user.getUid());
         userMap.put("email", user.getEmail());
         userMap.put("name", name);
-        userMap.put("role", RoleManager.Role.USER);
-//        userMap.put("createdAt", FieldValue.serverTimestamp());
+        userMap.put("role", RoleManager.Role.USER.name());
+        userMap.put("phone", "");
+        userMap.put("address", "");
 
         db.collection("users")
                 .document(user.getUid())
@@ -54,6 +66,42 @@ public class UserRepository {
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
 
+    public void getUserData(LoadUserCallback callback) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            callback.onFailure("Người dùng chưa đăng nhập.");
+            return;
+        }
 
+        db.collection("users").document(currentUser.getUid())
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            user.setUid(currentUser.getUid());
+                            user.setEmail(currentUser.getEmail());
+                            callback.onSuccess(user);
+                        } else {
+                            callback.onFailure("Không thể chuyển đổi dữ liệu người dùng.");
+                        }
+                    } else {
+                        callback.onFailure("Không tìm thấy thông tin người dùng.");
+                    }
+                })
+                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
+    public void updateUserData(Map<String, Object> data, UpdateUserCallback callback) {
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            callback.onFailure("Người dùng chưa đăng nhập.");
+            return;
+        }
+
+        db.collection("users").document(currentUser.getUid())
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(unused -> callback.onSuccess())
+                .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
 }
-
