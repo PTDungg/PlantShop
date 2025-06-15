@@ -33,6 +33,16 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:indeterminateTint="@color/primary_green"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
     <ScrollView
