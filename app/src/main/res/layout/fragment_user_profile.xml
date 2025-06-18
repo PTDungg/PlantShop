@@ -148,15 +148,15 @@
                     android:id="@+id/et_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:fontFamily="@font/poppins_regular"
                     android:hint="Số điện thoại"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:background="@android:color/transparent"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
                     android:inputType="phone"
-                    android:textCursorDrawable="@null" />
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="#000000"
+                    android:textCursorDrawable="@null"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -183,7 +183,7 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:background="@drawable/button_save_selector"
+            android:background="@drawable/button_selector"
             android:textAllCaps="false"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
