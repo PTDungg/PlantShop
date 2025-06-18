@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.plantshop.R;
-import com.example.plantshop.ui.admin.dashboard.HomeAdminActivity;
+import com.example.plantshop.ui.admin.AdminActivity;
 import com.example.plantshop.ui.guest.HomeGuestActivity;
 import com.example.plantshop.ui.user.home.HomeUserActivity;
 
@@ -43,7 +43,7 @@ public class SplashActivity extends AppCompatActivity {
                     Intent intent;
                     if (role != null) {
                         if (role.equals("ADMIN")) {
-                            intent = new Intent(SplashActivity.this, HomeAdminActivity.class);
+                            intent = new Intent(SplashActivity.this, AdminActivity.class);
                         } else if (role.equals("USER")) {
                             intent = new Intent(SplashActivity.this, HomeUserActivity.class);
                         } else if (role.equals("GUEST")) {

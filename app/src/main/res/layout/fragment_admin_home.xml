@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingHorizontal="12dp"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_menu"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+
+        <ImageView
+            android:id="@+id/btnSerach"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_seatch"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="4dp" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnAll"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="Tất cả"
+            android:textColor="@drawable/text_color_category_selector"
+            android:background="@drawable/button_category_selector"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSenDa"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="Sen đá"
+            android:textColor="@drawable/text_color_category_selector"
+            android:background="@drawable/button_category_selector"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnXuongRong"
+            android:layout_width="80dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="8dp"
+            android:text="Xương rồng"
+            android:textColor="@drawable/text_color_category_selector"
+            android:background="@drawable/button_category_selector"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCayCanh"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="Cây cảnh"
+            android:textColor="@drawable/text_color_category_selector"
+            android:background="@drawable/button_category_selector"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnHoa"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:text="Hoa"
+            android:textColor="@drawable/text_color_category_selector"
+            android:background="@drawable/button_category_selector"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            style="@style/Widget.AppCompat.Button.Borderless"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewProducts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp" />
+
+
+
+</LinearLayout>
