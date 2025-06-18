@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:src="@drawable/ic_back"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="4dp" />
+             />
 
         <TextView
             android:layout_width="wrap_content"
@@ -185,15 +185,16 @@
         android:padding="20dp"
         android:background="#FFFFFF">
 
-        <androidx.appcompat.widget.AppCompatButton
+         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:text="LƯU"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:background="@drawable/button_selector"
+            android:fontFamily="@font/poppins_regular"
+            android:background="@drawable/button_save_selector"
             android:textAllCaps="false"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
