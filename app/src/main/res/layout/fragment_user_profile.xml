@@ -194,7 +194,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="@font/poppins_regular"
-            android:background="@drawable/button_save_selector"
+            android:background="@drawable/button_selector"
             android:textAllCaps="false"
             style="@style/Widget.AppCompat.Button.Borderless" />
 
