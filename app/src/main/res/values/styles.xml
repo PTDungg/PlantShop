@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Style cho BottomNavigationView -->
+    <style name="BottomNavigationViewCustom" >
+        <!-- Tắt hiệu ứng shift mode -->
+        <item name="itemHorizontalTranslationEnabled">false</item>
+        <!-- Loại bỏ ripple color để không ảnh hưởng đến giao diện -->
+        <item name="itemRippleColor">@android:color/transparent</item>
+    </style>
+
+    <!-- Màu mặc định (không áp dụng nếu bạn đã xử lý riêng) -->
+    <color name="bottom_nav_item_tint">
+        <item android:color="@android:color/black" />
+    </color>
+</resources>
