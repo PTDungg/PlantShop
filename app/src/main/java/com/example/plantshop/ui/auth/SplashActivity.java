@@ -39,11 +39,20 @@ public class SplashActivity extends AppCompatActivity {
                 }
 
                 // Đã đăng nhập, kiểm tra vai trò
-                viewModel.getUserRole().observe(this, role -> {
+                viewModel.getUserInfo().observe(this, userData -> {
                     Intent intent;
+                    String role = userData.get("role");
                     if (role != null) {
                         if (role.equals("ADMIN")) {
                             intent = new Intent(SplashActivity.this, AdminActivity.class);
+                            intent.putExtra("id", userData.get("id"));
+                            intent.putExtra("email", userData.get("email"));
+                            intent.putExtra("name", userData.get("name"));
+                            intent.putExtra("phone", userData.get("phone"));
+                            intent.putExtra("address", userData.get("address"));
+                            intent.putExtra("role", role);
+                            startActivity(intent);
+                            finish();
                         } else if (role.equals("USER")) {
                             intent = new Intent(SplashActivity.this, HomeUserActivity.class);
                         } else if (role.equals("GUEST")) {

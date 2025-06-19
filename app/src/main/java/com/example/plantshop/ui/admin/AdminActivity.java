@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.plantshop.R;
@@ -15,7 +16,11 @@ import com.example.plantshop.ui.auth.WelcomeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminActivity extends AppCompatActivity {
+    private Bundle userBundle;
     private Button btnSigOut;
     private ViewPager2 viewPager;
 
@@ -24,6 +29,20 @@ public class AdminActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin);
+
+
+        AdminViewModel viewModel = new ViewModelProvider(this).get(AdminViewModel.class);
+
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("id", getIntent().getStringExtra("id"));
+        userMap.put("email", getIntent().getStringExtra("email"));
+        userMap.put("name", getIntent().getStringExtra("name"));
+        userMap.put("phone", getIntent().getStringExtra("phone"));
+        userMap.put("address", getIntent().getStringExtra("address"));
+        userMap.put("role", getIntent().getStringExtra("role"));
+
+        viewModel.setUserData(userMap);
+
 
         // Thiết lập ViewPager2
         viewPager = findViewById(R.id.view_page2_home_admin);

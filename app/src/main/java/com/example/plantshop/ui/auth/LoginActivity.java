@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,31 +41,46 @@ public class LoginActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
 
-         edtEmail = findViewById(R.id.edtEmail);
-         edtPassword = findViewById(R.id.edtPassword);
-         txtForget = findViewById(R.id.txtForget);
-         txtSigUp =  findViewById(R.id.txtSigUp);
-         btnLogIn = findViewById(R.id.btnLogIn);
+        edtEmail = findViewById(R.id.edtEmail);
+        edtPassword = findViewById(R.id.edtPassword);
+        txtForget = findViewById(R.id.txtForget);
+        txtSigUp =  findViewById(R.id.txtSigUp);
+        btnLogIn = findViewById(R.id.btnLogIn);
+
+        edtEmail.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_NEXT) {
+                moveFocusTo(edtPassword);
+                return true;
+            }
+            return false;
+        });
+
 
         mAuth = FirebaseAuth.getInstance();
 
         authViewModel = new ViewModelProvider(this).get(AuthViewModel.class);
         // Quan sát userRoleLiveData để chuyển hướng
-        authViewModel.getUserRole().observe(this, role -> {
-            if (role != null) {
-                if (role.equals("ADMIN")) {
+        authViewModel.getUserInfo().observe(this, userData -> {
+            if (userData != null) {
+                String role = userData.get("role");
+                if ("ADMIN".equals(role)) {
                     Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
+                    intent.putExtra("id", userData.get("id"));
+                    intent.putExtra("email", userData.get("email"));
+                    intent.putExtra("name", userData.get("name"));
+                    intent.putExtra("phone", userData.get("phone"));
+                    intent.putExtra("address", userData.get("address"));
+                    intent.putExtra("role", role);
                     startActivity(intent);
                     finish();
-                } else if (role.equals("USER")) {
-                    Intent intent = new Intent(LoginActivity.this, HomeUserActivity.class);
-                    startActivity(intent);
-                    finish();
+                } else if ("USER".equals(role)) {
+                    // Chuyển sang HomeUserActivity nếu cần
                 } else {
                     Toast.makeText(LoginActivity.this, "Vai trò không hợp lệ: " + role, Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         // Quan sát lỗi
         authViewModel.getError().observe(this, error -> {
@@ -109,52 +125,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-//    private void handleLogIn() {
-//        String email = edtEmail.getText().toString().trim();
-//        String password = edtPassword.getText().toString().trim();
-//        if (email.isEmpty() || password.isEmpty()) {
-//            Toast.makeText(LoginActivity.this, "Vui lòng nhập đầy đủ email và mật khẩu", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-//            Toast.makeText(LoginActivity.this, "Email không hợp lệ", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (password.length() < 6) {
-//            Toast.makeText(LoginActivity.this, "Mật khẩu phải có ít nhất 6 ký tự", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        mAuth.signInWithEmailAndPassword(email, password)
-//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<AuthResult> task) {
-//                        if (task.isSuccessful()) {
-//                            // Sign in success, update UI with the signed-in user's information
-//                            Log.d(TAG, "signInWithEmail:success");
-//                            FirebaseUser user = mAuth.getCurrentUser();
-//                            updateUI(user);
-//                        } else {
-//                            // If sign in fails, display a message to the user.
-//                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-//                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-//                                    Toast.LENGTH_SHORT).show();
-//                            updateUI(null);
-//                        }
-//                    }
-//                });
-//    }
-//
-//    private void updateUI(FirebaseUser user) {
-//        if (user != null) {
-//            Intent intent = new Intent(LoginActivity.this, HomeUserActivity.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            Log.d(TAG, "User is null. Stay on SignUp screen.");
-//        }
-//    }
+    private void moveFocusTo(EditText targetEditText) {
+        targetEditText.requestFocus();
+        targetEditText.setSelection(targetEditText.getText().length());
+    }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

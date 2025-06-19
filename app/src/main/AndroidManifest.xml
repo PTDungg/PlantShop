@@ -16,6 +16,7 @@
         <activity
             android:name=".ui.admin.AdminActivity"
             android:exported="false"
+            android:windowSoftInputMode="adjustResize"
             android:theme="@style/Theme.PlantShop" />
         <activity
             android:name=".ui.guest.HomeGuestActivity"
@@ -30,7 +31,7 @@
             android:name=".ui.auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.auth.MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.WelcomeActivity"

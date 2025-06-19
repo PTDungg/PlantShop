@@ -33,18 +33,22 @@ public class AuthRepository {
         return mAuth.getCurrentUser();
     }
 
-    public interface GuestLoginCallback {
-        void onSuccess();
-        void onFailure(Exception e);
-    }
-
     public interface EmailLoginCallback {
+
         void onSuccess(FirebaseUser user);
         void onFailure(String errorMessage);
     }
-
     public interface RoleCallback {
+
         void onSuccess(String role);
+        void onFailure(Exception e);
+    }
+    public interface UserInfoCallback {
+        void onSuccess(Map<String, String> userData);
+        void onFailure(Exception e);
+    }
+    public interface GuestLoginCallback {
+        void onSuccess();
         void onFailure(Exception e);
     }
 
@@ -84,6 +88,26 @@ public class AuthRepository {
                     callback.onFailure(e);
                 });
     }
+    public void getUserInfo(String uid, UserInfoCallback callback) {
+        db.collection("users").document(uid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Map<String, String> userData = new HashMap<>();
+                        userData.put("id", documentSnapshot.getString("id"));
+                        userData.put("email", documentSnapshot.getString("email"));
+                        userData.put("name", documentSnapshot.getString("name"));
+                        userData.put("phone", documentSnapshot.getString("phone"));
+                        userData.put("address", documentSnapshot.getString("address"));
+                        userData.put("role", documentSnapshot.getString("role"));
+                        callback.onSuccess(userData);
+                    } else {
+                        callback.onFailure(new Exception("Không tìm thấy thông tin người dùng"));
+                    }
+                })
+                .addOnFailureListener(callback::onFailure);
+    }
+
     public void loginAsGuest(Context context, GuestLoginCallback callback) {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String savedUid = prefs.getString(ANONYMOUS_UID_KEY, null);
