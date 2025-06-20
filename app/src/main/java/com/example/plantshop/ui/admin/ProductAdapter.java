@@ -1,8 +1,12 @@
 package com.example.plantshop.ui.admin;
 
+import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
@@ -12,13 +16,22 @@ import java.util.*;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
     private List<Product> productList;
+    private OnItemClickListener  listener;
+
+    public interface OnItemClickListener  {
+        void onProductClick(Product product);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public ProductAdapter(List<Product> productList) {
         this.productList = productList;
     }
 
-    public void setProductList(List<Product> list) {
-        this.productList = list;
+    public void setProductList(List<Product> newList) {
+        this.productList = newList;
         notifyDataSetChanged();
     }
 
@@ -32,19 +45,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
 
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        Product p = productList.get(position);
+        Product product = productList.get(position);
 
-        holder.tvName.setText(p.getName());
-        holder.tvPrice.setText(NumberFormat.getInstance().format(p.getPrice()) + " VNĐ");
-        holder.tvStatus.setText(p.isAvailable() ? "Còn hàng" : "Hết hàng");
+        holder.tvName.setText(product.getName());
+        holder.tvPrice.setText(NumberFormat.getInstance().format(product.getPrice()) + " VNĐ");
+        holder.tvStatus.setText(product.isAvailable() ? "Còn hàng" : "Hết hàng");
         holder.tvStatus.setTextColor(
-                p.isAvailable() ? holder.itemView.getContext().getColor(R.color.primary_green)
+                product.isAvailable() ? holder.itemView.getContext().getColor(R.color.primary_green)
                         : holder.itemView.getContext().getColor(android.R.color.holo_red_dark));
 
         Glide.with(holder.itemView.getContext())
-                .load(p.getImageUrl())
+                .load(product.getImageUrl())
                 .placeholder(R.drawable.img_placeholder)
                 .into(holder.imgProduct);
+
+        // 👇 Sự kiện click vào item để mở FragmentUpdateDelete
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onProductClick(product);
+        });
     }
 
     @Override

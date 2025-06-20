@@ -1,5 +1,7 @@
 package com.example.plantshop.ui.admin;
 
+import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,6 +10,7 @@ import com.example.plantshop.data.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class ProductViewModel extends ViewModel {
 
@@ -15,9 +18,16 @@ public class ProductViewModel extends ViewModel {
 
     private final MutableLiveData<List<Product>> allProducts = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<List<Product>> filteredProducts = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Product> selectedProduct = new MutableLiveData<>();
 
     public LiveData<List<Product>> getFilteredProducts() {
         return filteredProducts;
+    }
+    public LiveData<Product> getSelectedProduct() {
+        return selectedProduct;
+    }
+    public void selectProduct(Product product) {
+        selectedProduct.setValue(product);
     }
 
     public void loadProducts() {
@@ -42,6 +52,26 @@ public class ProductViewModel extends ViewModel {
             }
             filteredProducts.setValue(filtered);
         }
+    }
+    public void updateProduct(Product product, Consumer<Boolean> callback) {
+        productRepository.updateProduct(product, callback);
+        loadProducts();
+    }
+
+    public void deleteProduct(String productId, Consumer<Boolean> callback) {
+        productRepository.deleteProduct(productId, callback);
+        loadProducts();
+    }
+
+    public void uploadImageAndUpdateProduct(Uri imageUri, Product product, Consumer<Boolean> callback) {
+        productRepository.uploadImage(imageUri, imageUrl -> {
+            if (imageUrl != null) {
+                product.setImageUrl(imageUrl);
+                productRepository.updateProduct(product, callback);
+            } else {
+                callback.accept(false);
+            }
+        });
     }
 }
 

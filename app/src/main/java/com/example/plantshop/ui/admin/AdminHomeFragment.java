@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -82,6 +83,18 @@ public class AdminHomeFragment extends Fragment {
         productAdapter = new ProductAdapter(new ArrayList<>());
         recyclerView.setAdapter(productAdapter);
 
+        productAdapter.setOnItemClickListener(product -> {
+            // Lưu vào ViewModel dùng chung
+            productViewModel.selectProduct(product);
+
+            // Gọi showOverlayFragment từ AdminActivity
+            if (getActivity() instanceof AdminActivity) {
+                ((AdminActivity) getActivity()).showOverlayFragment(new AdminUpdateDeleteFragment());
+            }
+        });
+
+
+        // Phân loại sản phẩm
         AppCompatButton btnAll = view.findViewById(R.id.btnAll);
         AppCompatButton btnSenDa = view.findViewById(R.id.btnSenDa);
         AppCompatButton btnXuongRong = view.findViewById(R.id.btnXuongRong);
@@ -90,17 +103,17 @@ public class AdminHomeFragment extends Fragment {
 
         categoryButtons = Arrays.asList(btnAll, btnSenDa, btnXuongRong, btnCayCanh, btnHoa);
 
-        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
         //Quan sat du lieu
         productViewModel.getFilteredProducts().observe(getViewLifecycleOwner(), products -> {
             productAdapter.setProductList(products);
         });
 
         setCategoryButtonClick(btnAll, "all");
-        setCategoryButtonClick(btnSenDa, "Sen đá");
-        setCategoryButtonClick(btnXuongRong, "Xương rồng");
-        setCategoryButtonClick(btnCayCanh, "Cây cảnh");
-        setCategoryButtonClick(btnHoa, "Hoa");
+        setCategoryButtonClick(btnSenDa, "sen đá");
+        setCategoryButtonClick(btnXuongRong, "xương rồng");
+        setCategoryButtonClick(btnCayCanh, "cây cảnh");
+        setCategoryButtonClick(btnHoa, "hoa");
 
         // Default chọn "Tất cả"
         btnAll.setSelected(true);
@@ -118,5 +131,4 @@ public class AdminHomeFragment extends Fragment {
             productViewModel.filterByCategory(category);
         });
     }
-
 }

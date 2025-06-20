@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -46,8 +49,9 @@ public class AdminActivity extends AppCompatActivity {
 
         // Thiết lập ViewPager2
         viewPager = findViewById(R.id.view_page2_home_admin);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         if (viewPager != null) {
-            viewPager.setAdapter(new ViewPagerAdapter(this));
+            viewPager.setAdapter(adapter);
             viewPager.setUserInputEnabled(true); // Trượt tay
 
             // Thêm listener để đồng bộ với BottomNavigationView khi trượt
@@ -115,5 +119,32 @@ public class AdminActivity extends AppCompatActivity {
         } else {
             android.util.Log.e("AdminActivity", "Button btnSigOut not found in layout");
         }
+
+        // Xử lý back
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FrameLayout overlay = findViewById(R.id.fragment_overlay_container);
+                if (overlay.getVisibility() == View.VISIBLE) {
+                    overlay.setVisibility(View.GONE);
+                    getSupportFragmentManager().popBackStack(); // pop fragment overlay
+                } else {
+                    // Nếu không có overlay, xử lý back như bình thường
+                    setEnabled(false); // bỏ chặn callback này
+                    getOnBackPressedDispatcher().onBackPressed(); // gọi lại back mặc định
+                }
+            }
+        });
     }
+
+    public void showOverlayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_overlay_container, fragment)
+                .addToBackStack("overlay")
+                .commit();
+
+        findViewById(R.id.fragment_overlay_container).setVisibility(View.VISIBLE);
+    }
+
 }

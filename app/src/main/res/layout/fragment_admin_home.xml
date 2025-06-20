@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/admin_home_fragment_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
+
+    <!-- Giao diện chính chứa danh sách sản phẩm -->
+    <LinearLayout
+        android:id="@+id/layoutProductList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -118,4 +125,5 @@
 
 
 
-</LinearLayout>
+    </LinearLayout>
+</FrameLayout>
