@@ -2,13 +2,22 @@ package com.example.plantshop.ui.admin;
 
 import android.os.Bundle;
 
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.plantshop.R;
+import com.example.plantshop.data.Model.Product;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +25,11 @@ import com.example.plantshop.R;
  * create an instance of this fragment.
  */
 public class AdminHomeFragment extends Fragment {
+
+    private RecyclerView recyclerView;
+    private ProductAdapter productAdapter;
+    private ProductViewModel productViewModel;
+    private List<AppCompatButton> categoryButtons = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,19 +75,48 @@ public class AdminHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_admin_home, container, false);
+
+        recyclerView = view.findViewById(R.id.recyclerViewProducts);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        productAdapter = new ProductAdapter(new ArrayList<>());
+        recyclerView.setAdapter(productAdapter);
+
+        AppCompatButton btnAll = view.findViewById(R.id.btnAll);
+        AppCompatButton btnSenDa = view.findViewById(R.id.btnSenDa);
+        AppCompatButton btnXuongRong = view.findViewById(R.id.btnXuongRong);
+        AppCompatButton btnCayCanh = view.findViewById(R.id.btnCayCanh);
+        AppCompatButton btnHoa = view.findViewById(R.id.btnHoa);
+
+        categoryButtons = Arrays.asList(btnAll, btnSenDa, btnXuongRong, btnCayCanh, btnHoa);
+
+        productViewModel = new ViewModelProvider(this).get(ProductViewModel.class);
+        //Quan sat du lieu
+        productViewModel.getFilteredProducts().observe(getViewLifecycleOwner(), products -> {
+            productAdapter.setProductList(products);
+        });
+
+        setCategoryButtonClick(btnAll, "all");
+        setCategoryButtonClick(btnSenDa, "Sen đá");
+        setCategoryButtonClick(btnXuongRong, "Xương rồng");
+        setCategoryButtonClick(btnCayCanh, "Cây cảnh");
+        setCategoryButtonClick(btnHoa, "Hoa");
+
+        // Default chọn "Tất cả"
+        btnAll.setSelected(true);
+        productViewModel.loadProducts();
+
+        return view;
+    }
+
+    private void setCategoryButtonClick(AppCompatButton button, String category) {
+        button.setOnClickListener(v -> {
+            for (AppCompatButton btn : categoryButtons) {
+                btn.setSelected(false);
+            }
+            button.setSelected(true);
+            productViewModel.filterByCategory(category);
+        });
     }
 
 }
-//    Check_select_button_category
-//    if (product.getStatus().equalsIgnoreCase("còn hàng")) {
-//        tvStatus.setText("còn hàng");
-//        tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.black));
-//    } else {
-//        tvStatus.setText("hết hàng");
-//        tvStatus.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
-//    }
-//   Thiết lập cột
-//    recyclerViewProducts.layoutManager = GridLayoutManager(this, 2) // 2 cột
-//    recyclerViewProducts.adapter = ProductAdapter(productList)
