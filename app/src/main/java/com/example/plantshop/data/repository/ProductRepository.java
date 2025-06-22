@@ -37,6 +37,12 @@ public class ProductRepository {
                     callback.onResult(new ArrayList<>());
                 });
     }
+    public void addProduct(Product product, Consumer<Boolean> callback) {
+        db.collection("product").document(product.getId())
+                .set(product)
+                .addOnSuccessListener(unused -> callback.accept(true))
+                .addOnFailureListener(e -> callback.accept(false));
+    }
 
     public void updateProduct(Product product, Consumer<Boolean> callback) {
         db.collection("product").document(product.getId())

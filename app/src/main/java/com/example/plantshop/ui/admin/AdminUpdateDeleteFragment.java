@@ -40,7 +40,7 @@ import java.util.Arrays;
 public class AdminUpdateDeleteFragment extends Fragment {
     private ImageView imgProduct;
     private EditText edtId, edtName, edtPrice;
-    private Spinner spinnerCategory, spinnerStatus;
+    private Spinner spnCategory, spnStatus;
     private AppCompatButton btnUpdate, btnDelete;
 
     private Uri selectedImageUri;
@@ -48,7 +48,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private boolean hasChanged = false;
     private ProductViewModel productViewModel;
 
-    private final String[] categories = {"Tất cả", "sen đá", "xương rồng", "cây cảnh", "hoa"};
+    private final String[] categories = {"", "sen đá", "xương rồng", "cây cảnh", "hoa"};
     private final String[] statuses = {"Còn hàng", "Hết hàng"};
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
@@ -105,8 +105,8 @@ public class AdminUpdateDeleteFragment extends Fragment {
         edtId = view.findViewById(R.id.edtProductId);
         edtName = view.findViewById(R.id.edtProductName);
         edtPrice = view.findViewById(R.id.edtProductPrice);
-        spinnerCategory = view.findViewById(R.id.spinnerCategory);
-        spinnerStatus = view.findViewById(R.id.spinnerStatus);
+        spnCategory = view.findViewById(R.id.spnCategory);
+        spnStatus = view.findViewById(R.id.spnStatus);
         btnUpdate = view.findViewById(R.id.btnUpdate);
         btnDelete = view.findViewById(R.id.btnDelete);
 
@@ -159,21 +159,23 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
         // Set spinner category
         int catIndex = Arrays.asList(categories).indexOf(p.getCategory());
-        spinnerCategory.setSelection(catIndex >= 0 ? catIndex : 0);
+        spnCategory.setSelection(catIndex >= 0 ? catIndex : 0);
 
         // Status
-        spinnerStatus.setSelection(p.isAvailable() ? 0 : 1);
+        spnStatus.setSelection(p.isAvailable() ? 0 : 1);
 
         // Load ảnh
         Glide.with(this).load(p.getImageUrl()).into(imgProduct);
     }
 
     private void setupSpinners() {
-        ArrayAdapter<String> adapterCategory = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categories);
-        spinnerCategory.setAdapter(adapterCategory);
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, categories);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnCategory.setAdapter(categoryAdapter);
 
-        ArrayAdapter<String> adapterStatus = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statuses);
-        spinnerStatus.setAdapter(adapterStatus);
+        ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statuses);
+        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnStatus.setAdapter(statusAdapter);
     }
 
     private void setupTextWatchers() {
@@ -189,8 +191,8 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
         edtName.addTextChangedListener(watcher);
         edtPrice.addTextChangedListener(watcher);
-        spinnerCategory.setOnItemSelectedListener(new SpinnerChangedListener());
-        spinnerStatus.setOnItemSelectedListener(new SpinnerChangedListener());
+        spnCategory.setOnItemSelectedListener(new SpinnerChangedListener());
+        spnStatus.setOnItemSelectedListener(new SpinnerChangedListener());
     }
 
     private class SpinnerChangedListener implements AdapterView.OnItemSelectedListener {
@@ -203,8 +205,8 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private void checkForChanges() {
         String name = edtName.getText().toString().trim();
         String priceStr = edtPrice.getText().toString().trim();
-        String category = spinnerCategory.getSelectedItem().toString();
-        boolean available = spinnerStatus.getSelectedItemPosition() == 0;
+        String category = spnCategory.getSelectedItem().toString();
+        boolean available = spnStatus.getSelectedItemPosition() == 0;
 
         boolean changed =
                 !name.equals(originalProduct.getName()) ||
@@ -239,14 +241,14 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private void updateProduct() {
         String name = edtName.getText().toString().trim();
         int price = Integer.parseInt(edtPrice.getText().toString().trim());
-        String category = spinnerCategory.getSelectedItem().toString().trim();
-        boolean available = spinnerStatus.getSelectedItemPosition() == 0;
+        String category = spnCategory.getSelectedItem().toString().trim();
+        boolean available = spnStatus.getSelectedItemPosition() == 0;
 
         Product updated = new Product();
         updated.setId(originalProduct.getId());
         updated.setName(name);
         updated.setPrice(price);
-        updated.setCategory(category.isEmpty() ? null : category);
+        updated.setCategory(category.isEmpty() ? "" : category);
         updated.setAvailable(available);
         updated.setImageUrl(originalProduct.getImageUrl()); // tạm thời
 
