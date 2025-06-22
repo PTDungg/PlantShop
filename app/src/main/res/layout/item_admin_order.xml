@@ -31,32 +31,38 @@
             android:layout_marginStart="12dp">
 
             <TextView
-                android:id="@+id/tvProductName"
+                android:id="@+id/tvCustomerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cây Cảnh"
+                android:text="Nguyễn Văn A"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:textColor="#000000" />
 
             <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/tvTotalItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="360.000 VNĐ"
-                android:textSize="14sp"
-                android:textColor="@color/primary_green"
-                android:layout_marginTop="2dp" />
-
-            <TextView
-                android:id="@+id/tvTotal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Số lượng: 2"
+                android:text="Tổng sản phẩm: 3"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp" />
 
+            <TextView
+                android:id="@+id/tvTotalPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng tiền: 480.000 VNĐ"
+                android:textSize="14sp"
+                android:layout_marginTop="2dp" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/underlined_confirmed"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:textColor="#000000" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

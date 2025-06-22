@@ -53,6 +53,10 @@ public class ProductViewModel extends ViewModel {
             filteredProducts.setValue(filtered);
         }
     }
+    public void addProduct(Product product, Consumer<Boolean> callback) {
+        productRepository.addProduct(product, callback);
+        loadProducts();
+    }
     public void updateProduct(Product product, Consumer<Boolean> callback) {
         productRepository.updateProduct(product, callback);
         loadProducts();
