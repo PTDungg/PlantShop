@@ -10,6 +10,7 @@ import com.example.plantshop.data.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ProductViewModel extends ViewModel {
@@ -53,6 +54,11 @@ public class ProductViewModel extends ViewModel {
             filteredProducts.setValue(filtered);
         }
     }
+
+    public void checkProductExists(String productId, Consumer<Boolean> callback) {
+        productRepository.checkProductExists(productId, callback);
+    }
+
     public void addProduct(Product product, Consumer<Boolean> callback) {
         productRepository.addProduct(product, callback);
         loadProducts();
@@ -66,7 +72,9 @@ public class ProductViewModel extends ViewModel {
         productRepository.deleteProduct(productId, callback);
         loadProducts();
     }
-
+    public void uploadImage(Uri imageUri, Consumer<String> callback) {
+        productRepository.uploadImage(imageUri, callback);
+    }
     public void uploadImageAndUpdateProduct(Uri imageUri, Product product, Consumer<Boolean> callback) {
         productRepository.uploadImage(imageUri, imageUrl -> {
             if (imageUrl != null) {
@@ -78,4 +86,3 @@ public class ProductViewModel extends ViewModel {
         });
     }
 }
-

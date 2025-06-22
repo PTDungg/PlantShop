@@ -274,7 +274,6 @@ public class AdminUpdateDeleteFragment extends Fragment {
                 if (success) {
                     Toast.makeText(getContext(), "Đã xoá sản phẩm", Toast.LENGTH_SHORT).show();
                     requireActivity().onBackPressed();
-
                 }
         });
     }

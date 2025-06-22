@@ -182,27 +182,24 @@ public class AdminAddFragment extends Fragment {
 
     private void checkIdExistsAndAdd() {
         String id = edtId.getText().toString().trim();
-        FirebaseFirestore.getInstance().collection("product").document(id).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Toast.makeText(getContext(), "ID đã tồn tại, vui lòng chọn ID khác", Toast.LENGTH_SHORT).show();
-                    } else {
-                        addProductToFirestore();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(getContext(), "Lỗi kiểm tra ID", Toast.LENGTH_SHORT).show();
-                });
+        productViewModel.checkProductExists(id, exists -> {
+            if (exists) {
+                Toast.makeText(getContext(), "ID đã tồn tại, vui lòng chọn ID khác", Toast.LENGTH_SHORT).show();
+            } else {
+                addProduct();
+            }
+        });
     }
 
-    private void addProductToFirestore() {
+
+    private void addProduct() {
         String id = edtId.getText().toString().trim();
         String name = edtName.getText().toString().trim();
         int price = Integer.parseInt(edtPrice.getText().toString().trim());
         String category = spnCategory.getSelectedItem().toString().trim();
         boolean available = spnStatus.getSelectedItemPosition() == 0;
 
-        productRepository.uploadImage(selectedImageUri, imageUrl -> {
+        productViewModel.uploadImage(selectedImageUri, imageUrl -> {
             if (imageUrl != null) {
                 Product product = new Product();
                 product.setId(id);

@@ -1,15 +1,18 @@
 package com.example.plantshop.data.repository;
 
 import android.net.Uri;
+import android.util.Log;
 
 import com.example.plantshop.data.Model.Product;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ProductRepository {
@@ -37,17 +40,11 @@ public class ProductRepository {
                     callback.onResult(new ArrayList<>());
                 });
     }
-    public void addProduct(Product product, Consumer<Boolean> callback) {
-        db.collection("product").document(product.getId())
-                .set(product)
-                .addOnSuccessListener(unused -> callback.accept(true))
-                .addOnFailureListener(e -> callback.accept(false));
-    }
 
-    public void updateProduct(Product product, Consumer<Boolean> callback) {
-        db.collection("product").document(product.getId())
-                .set(product)
-                .addOnSuccessListener(unused -> callback.accept(true))
+    public void checkProductExists(String productId, Consumer<Boolean> callback) {
+        db.collection("product").document(productId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> callback.accept(documentSnapshot.exists()))
                 .addOnFailureListener(e -> callback.accept(false));
     }
 
@@ -61,12 +58,33 @@ public class ProductRepository {
                 .addOnFailureListener(e -> callback.accept(null));
     }
 
+    public void addProduct(Product product, Consumer<Boolean> callback) {
+        db.collection("product").document(product.getId())
+                .set(product)
+                .addOnSuccessListener(unused -> callback.accept(true))
+                .addOnFailureListener(e -> {
+                    Log.e("ProductAdd", "Thêm sản phẩm thất bại", e);
+                    callback.accept(false);
+                });
+    }
+
+    public void updateProduct(Product product, Consumer<Boolean> callback) {
+        db.collection("product").document(product.getId())
+                .set(product)
+                .addOnSuccessListener(unused -> callback.accept(true))
+                .addOnFailureListener(e -> {
+                    Log.e("ProductUpdate", "Cập nhật sản phẩm thất bại", e);
+                    callback.accept(false);
+                });
+    }
+
     public void deleteProduct(String productId, Consumer<Boolean> callback) {
         db.collection("product").document(productId)
                 .delete()
                 .addOnSuccessListener(unused -> callback.accept(true))
-                .addOnFailureListener(e -> callback.accept(false));
+                .addOnFailureListener(e -> {
+                    Log.e("ProductDelete", "Xóa sản phẩm thất bại", e);
+                    callback.accept(false);
+                });
     }
 }
-
-
