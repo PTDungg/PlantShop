@@ -30,6 +30,7 @@ import com.example.plantshop.ui.auth.WelcomeActivity;
 import com.example.plantshop.ui.user.home.HomeUserActivity;
 import com.example.plantshop.ui.user.home.ListProductFragment;
 import com.example.plantshop.ui.user.home.SearchActivity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -45,6 +46,7 @@ public class HomeGuestActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ImageView btnMenu, btnSearch;
     private ViewPager2 viewPager;
+    private BottomNavigationView bottomNavigation;
 
     private final List<String> tabTitles = List.of("Tất cả", "Sen đá", "Xương rồng", "Cây cảnh", "Hoa");
     private ProductViewModel productViewModel;
@@ -101,6 +103,8 @@ public class HomeGuestActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btnMenu);
         btnSearch = findViewById(R.id.btnSearch);
         viewPager = findViewById(R.id.viewPager);
+        bottomNavigation = findViewById(R.id.bottom_navigation); // Ánh xạ BottomNavigationView
+
     }
 
     private void setupListeners() {
@@ -113,12 +117,16 @@ public class HomeGuestActivity extends AppCompatActivity {
         btnMenu.setOnClickListener(v -> {
             showPopupLogin();
         });
-
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            // Bất kể người dùng chọn item nào, cũng hiển thị popup
+            showPopupLogin();
+            return false; // Trả về false để item không được chọn (không đổi màu)
+        });
 
     }
 
     private void showPopupLogin() {
-
+        new LoginPromptDialogFragment().show(getSupportFragmentManager(), LoginPromptDialogFragment.TAG);
     }
 
     private void setupViewPagerWithTabs() {

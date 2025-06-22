@@ -28,6 +28,7 @@ public class LoginPromptDialogFragment extends DialogFragment {
         view.findViewById(R.id.btnLogin).setOnClickListener(v -> {
             // Chuyển đến màn hình Đăng nhập
             Intent intent = new Intent(getActivity(), LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             dismiss();
         });
@@ -35,6 +36,7 @@ public class LoginPromptDialogFragment extends DialogFragment {
         view.findViewById(R.id.btnRegister).setOnClickListener(v -> {
             // Chuyển đến màn hình Đăng ký
             Intent intent = new Intent(getActivity(), SigupActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             dismiss();
         });
