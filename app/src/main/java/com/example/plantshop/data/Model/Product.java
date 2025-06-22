@@ -1,5 +1,7 @@
 package com.example.plantshop.data.Model;
 
+import com.google.firebase.firestore.PropertyName;
+
 public class Product {
     private String id;
     private String name;
@@ -41,10 +43,12 @@ public class Product {
         this.name = name;
     }
 
+    @PropertyName("imageUrl")
     public String getImageUrl() {
         return imageUrl;
     }
 
+    @PropertyName("imageUrl")
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }

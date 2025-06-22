@@ -77,7 +77,6 @@ public class UserProfileFragment extends Fragment {
 
         viewModel.getIsSaved().observe(getViewLifecycleOwner(), saved -> {
             if (saved != null && saved) {
-                // ĐÃ XÓA DÒNG GÂY LỖI: viewModel.getIsSaved().setValue(false);
                 originalName = getText(etName);
                 originalAddress = getText(etAddress);
                 originalPhone = getText(etPhone);

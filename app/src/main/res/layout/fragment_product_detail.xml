@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -167,34 +168,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:baselineAligned="false">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Số lượng sản phẩm"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tvTotalLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Tổng tiền"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@color/black"
-                android:gravity="end" />
-        </LinearLayout>
-
         <!-- Nút tăng giảm và tổng tiền -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -203,84 +176,88 @@
             android:gravity="center_vertical"
             android:layout_marginTop="8dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDecrease"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                app:icon="@drawable/ic_remove"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@color/black"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp"
-                app:rippleColor="@color/primary_green"
-                android:backgroundTint="@color/white"
-                />
-
-            <TextView
-                android:id="@+id/tvQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:fontFamily="@font/poppins_regular"
-                android:textColor="@color/black"
-                android:gravity="center"
-                android:minWidth="30dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnIncrease"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:insetLeft="0dp"
-                android:insetTop="0dp"
-                android:insetRight="0dp"
-                android:insetBottom="0dp"
-                app:icon="@drawable/ic_add"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@color/black"
-                app:strokeColor="@color/black"
-                app:strokeWidth="2dp"
-                app:rippleColor="@color/primary_green"
-                android:backgroundTint="@color/white"
-                android:padding="0dp"
-                />
-
-            <Space
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnDecrease"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@drawable/ic_remove"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/black"
+                    app:rippleColor="@color/primary_green"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@color/white"
+                    />
+
+                <TextView
+                    android:id="@+id/tvQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/poppins_regular"
+                    android:gravity="center"
+                    android:minWidth="30dp"
+                    android:textColor="@color/black"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    tools:text="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnIncrease"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:insetLeft="0dp"
+                    android:insetTop="0dp"
+                    android:insetRight="0dp"
+                    android:insetBottom="0dp"
+                    app:icon="@drawable/ic_add"
+                    app:iconGravity="textStart"
+                    app:iconPadding="0dp"
+                    app:iconTint="@color/black"
+                    app:rippleColor="@color/primary_green"
+                    app:strokeColor="@color/black"
+                    app:strokeWidth="2dp"
+                    android:backgroundTint="@color/white"
+                    />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvTotalPrice"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="360.000VND"
-                android:textSize="24sp"
+                android:layout_weight="1"
+                tools:text="180.000 VND"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 android:fontFamily="@font/poppins_regular"
-                android:gravity="end"
-                android:textColor="@color/black" />
+                android:textColor="@color/primary_green"
+                android:gravity="end" />
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAddToCart"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="24dp"
-            android:text="THÊM VÀO GIỎ HÀNG"
-            android:fontFamily="@font/poppins_regular"
+            android:layout_height="60dp"
+            android:layout_marginTop="16dp"
+            android:text="Thêm vào giỏ hàng"
+            app:cornerRadius="12dp"
+            android:backgroundTint="@color/primary_green"
             android:textColor="@color/white"
-            android:background="@drawable/add_to_cart_button_bg"
-            />
+            android:fontFamily="@font/poppins_regular"/>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
