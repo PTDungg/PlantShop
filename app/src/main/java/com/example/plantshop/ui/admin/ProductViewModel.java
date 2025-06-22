@@ -30,6 +30,10 @@ public class ProductViewModel extends ViewModel {
         selectedProduct.setValue(product);
     }
 
+    public LiveData<List<Product>> getAllProducts() {
+        return allProducts;
+    }
+
     public void loadProducts() {
         productRepository.getAllProducts(products -> {
             allProducts.setValue(products);
@@ -53,6 +57,7 @@ public class ProductViewModel extends ViewModel {
             filteredProducts.setValue(filtered);
         }
     }
+
     public void updateProduct(Product product, Consumer<Boolean> callback) {
         productRepository.updateProduct(product, callback);
         loadProducts();
