@@ -25,8 +25,9 @@ public class ProductRepository {
     }
 
     public void getAllProducts(ProductCallback callback) {
+        // Lấy tất cả sản phẩm từ Firestore
         db.collection("product")
-                .get()
+                .get(Source.SERVER)
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Product> productList = new ArrayList<>();
                     for (DocumentSnapshot doc : queryDocumentSnapshots) {
@@ -34,14 +35,17 @@ public class ProductRepository {
                         p.setId(doc.getId());
                         productList.add(p);
                     }
+                    // Trả về danh sách sản phẩm
                     callback.onResult(productList);
                 })
                 .addOnFailureListener(e -> {
+                    // Trả về danh sách rỗng nếu thất bại
                     callback.onResult(new ArrayList<>());
                 });
     }
 
     public void checkProductExists(String productId, Consumer<Boolean> callback) {
+        // Kiểm tra xem sản phẩm có tồn tại trong Firestore không
         db.collection("product").document(productId)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> callback.accept(documentSnapshot.exists()))
@@ -49,9 +53,11 @@ public class ProductRepository {
     }
 
     public void uploadImage(Uri imageUri, Consumer<String> callback) {
+        // Tạo tên tệp ảnh duy nhất
         String fileName = UUID.randomUUID().toString() + ".jpg";
         StorageReference fileRef = storageRef.child(fileName);
 
+        // Tải ảnh lên Firebase Storage và lấy URL
         fileRef.putFile(imageUri)
                 .continueWithTask(task -> fileRef.getDownloadUrl())
                 .addOnSuccessListener(uri -> callback.accept(uri.toString()))
@@ -59,32 +65,100 @@ public class ProductRepository {
     }
 
     public void addProduct(Product product, Consumer<Boolean> callback) {
+        // Thêm sản phẩm mới vào Firestore
         db.collection("product").document(product.getId())
                 .set(product)
                 .addOnSuccessListener(unused -> callback.accept(true))
                 .addOnFailureListener(e -> {
+                    // Ghi log lỗi nếu thêm thất bại
                     Log.e("ProductAdd", "Thêm sản phẩm thất bại", e);
                     callback.accept(false);
                 });
     }
 
     public void updateProduct(Product product, Consumer<Boolean> callback) {
+        // Cập nhật thông tin sản phẩm trong Firestore
         db.collection("product").document(product.getId())
                 .set(product)
                 .addOnSuccessListener(unused -> callback.accept(true))
                 .addOnFailureListener(e -> {
+                    // Ghi log lỗi nếu cập nhật thất bại
                     Log.e("ProductUpdate", "Cập nhật sản phẩm thất bại", e);
                     callback.accept(false);
                 });
     }
 
     public void deleteProduct(String productId, Consumer<Boolean> callback) {
+        // Truy xuất sản phẩm để lấy URL ảnh
         db.collection("product").document(productId)
-                .delete()
-                .addOnSuccessListener(unused -> callback.accept(true))
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Product product = documentSnapshot.toObject(Product.class);
+                        String imageUrl = product.getImageUrl();
+
+                        // Xóa tài liệu sản phẩm từ Firestore
+                        db.collection("product").document(productId)
+                                .delete()
+                                .addOnSuccessListener(unused -> {
+                                    // Nếu sản phẩm có URL ảnh, tiến hành xóa ảnh từ Storage
+                                    if (imageUrl != null && !imageUrl.isEmpty()) {
+                                        try {
+                                            // Lấy tham chiếu đến tệp ảnh từ URL
+                                            StorageReference imageRef = FirebaseStorage.getInstance().getReferenceFromUrl(imageUrl);
+                                            // Xóa ảnh từ Firebase Storage
+                                            imageRef.delete()
+                                                    .addOnSuccessListener(aVoid -> {
+                                                        // Ghi log khi xóa ảnh thành công
+                                                        Log.i("ProductDelete", "Xóa ảnh sản phẩm thành công");
+                                                        callback.accept(true);
+                                                    })
+                                                    .addOnFailureListener(e -> {
+                                                        // Ghi log lỗi nếu xóa ảnh thất bại
+                                                        Log.e("ProductDelete", "Xóa ảnh sản phẩm thất bại", e);
+                                                        // Vẫn trả về true vì sản phẩm đã xóa thành công
+                                                        callback.accept(true);
+                                                    });
+                                        } catch (IllegalArgumentException e) {
+                                            // Ghi log nếu URL ảnh không hợp lệ
+                                            Log.e("ProductDelete", "URL ảnh không hợp lệ: " + imageUrl, e);
+                                            // Vẫn trả về true vì sản phẩm đã xóa thành công
+                                            callback.accept(true);
+                                        }
+                                    } else {
+                                        // Không có ảnh để xóa, trả về true
+                                        callback.accept(true);
+                                    }
+                                })
+                                .addOnFailureListener(e -> {
+                                    // Ghi log lỗi nếu xóa sản phẩm thất bại
+                                    Log.e("ProductDelete", "Xóa sản phẩm thất bại", e);
+                                    callback.accept(false);
+                                });
+                    } else {
+                        // Ghi log nếu sản phẩm không tồn tại
+                        Log.e("ProductDelete", "Sản phẩm không tồn tại");
+                        callback.accept(false);
+                    }
+                })
                 .addOnFailureListener(e -> {
-                    Log.e("ProductDelete", "Xóa sản phẩm thất bại", e);
+                    // Ghi log lỗi nếu truy xuất sản phẩm thất bại
+                    Log.e("ProductDelete", "Lỗi khi truy xuất sản phẩm", e);
                     callback.accept(false);
                 });
+    }
+
+    // Phương thức hỗ trợ: Trích xuất đường dẫn tệp từ URL ảnh
+    private String extractFilePathFromUrl(String imageUrl) {
+        try {
+            Uri uri = Uri.parse(imageUrl);
+            String path = uri.getPath();
+            // Loại bỏ ký tự '/' đầu tiên và phần tiền tố trước đường dẫn tệp
+            return path.substring(path.indexOf("product_images/"));
+        } catch (Exception e) {
+            // Ghi log lỗi nếu phân tích URL thất bại
+            Log.e("ProductDelete", "Lỗi khi phân tích URL ảnh: " + imageUrl, e);
+            return null;
+        }
     }
 }
