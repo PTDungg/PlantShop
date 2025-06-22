@@ -1,29 +1,31 @@
 package com.example.plantshop.data.Model;
 
 public class Item {
-    private String productID;
+    private String productId;
     private String productName;
     private int quantity;
     private double price;
+    private String imageUrl;
 
     public Item() {
         // Required empty constructor for Firestore
     }
 
-    public Item(String productID, String productName, int quantity, double price) {
-        this.productID = productID;
+    public Item(String productId, String productName, int quantity, double price, String imageUrl) {
+        this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
         this.price = price;
+        this.imageUrl = imageUrl;
     }
 
-    // Getters and Setters
-    public String getProductID() {
-        return productID;
+
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProductID(String productID) {
-        this.productID = productID;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -49,5 +51,12 @@ public class Item {
     public void setPrice(double price) {
         this.price = price;
     }
-}
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+}
