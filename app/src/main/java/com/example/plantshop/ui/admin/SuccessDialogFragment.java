@@ -33,12 +33,11 @@ public class SuccessDialogFragment extends DialogFragment {
     @Override
     public void onStart() {
         super.onStart();
-        // Cỡ dialog: 80% chiều ngang
         if (getDialog() != null && getDialog().getWindow() != null) {
             Window window = getDialog().getWindow();
-            window.setLayout((int) (getResources().getDisplayMetrics().widthPixels * 0.8),
-                    WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setLayout(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
             window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
+
 }

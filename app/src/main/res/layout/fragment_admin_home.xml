@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -12,13 +14,24 @@
         android:elevation="2dp">
 
         <ImageView
-            android:id="@+id/btnMenu"
+            android:id="@+id/imgSigOut"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_menu"
+            android:src="@drawable/ic_sig_out"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="4dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center"
+            android:elevation="2dp"
+            android:text="DANH SÁCH SẢN PHẨM"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/btnSerach"
@@ -104,7 +117,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="20dp" />
-
-
 
 </LinearLayout>

@@ -90,5 +90,3 @@ public class ProductRepository {
                 .addOnFailureListener(e -> callback.accept(false));
     }
 }
-
-
