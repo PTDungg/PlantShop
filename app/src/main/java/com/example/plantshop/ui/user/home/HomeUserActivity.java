@@ -119,6 +119,11 @@ public class HomeUserActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
+        btnSearch = findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(HomeUserActivity.this, SearchActivity.class);
+            startActivity(intent);
+        });
 
         btnMenu.setOnClickListener(v -> {
             if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
