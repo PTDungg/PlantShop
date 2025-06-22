@@ -74,7 +74,15 @@ public class LoginActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else if ("USER".equals(role)) {
-                    // Chuyển sang HomeUserActivity nếu cần
+                    Intent intent = new Intent(LoginActivity.this, HomeUserActivity.class);
+                    intent.putExtra("id", userData.get("id"));
+                    intent.putExtra("email", userData.get("email"));
+                    intent.putExtra("name", userData.get("name"));
+                    intent.putExtra("phone", userData.get("phone"));
+                    intent.putExtra("address", userData.get("address"));
+                    intent.putExtra("role", role);
+                    startActivity(intent);
+                    finish();
                 } else {
                     Toast.makeText(LoginActivity.this, "Vai trò không hợp lệ: " + role, Toast.LENGTH_SHORT).show();
                 }
