@@ -37,9 +37,9 @@ public class Product implements Serializable {
 
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public double getPrice() { return price; }
+    public int getPrice() { return price; }
 
-    public void setPrice(double price) { this.price = price; }
+    public void setPrice(int price) { this.price = price; }
 
     public String getCategory() { return category; }
 

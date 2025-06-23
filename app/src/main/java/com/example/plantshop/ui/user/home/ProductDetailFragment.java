@@ -115,8 +115,8 @@ public class ProductDetailFragment extends Fragment {
         });
     }
 
-    private static String formatPrice(Double price) {
+    private static String formatPrice(Integer price) {
         if (price == null) return "";
-        return String.format("%,.0f VND", price);
+        return String.format("%,.d VND", price);
     }
 }

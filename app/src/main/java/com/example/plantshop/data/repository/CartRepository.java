@@ -1,6 +1,6 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -29,11 +29,11 @@ public class CartRepository {
     }
 
     public interface CartItemsCallback {
-        void onSuccess(List<Item> items);
+        void onSuccess(List<OrderItem> items);
         void onFailure(String error);
     }
 
-    public void addToCart(Item item, CartCallback callback) {
+    public void addToCart(OrderItem item, CartCallback callback) {
         String userId = getCurrentUserId();
         if (userId == null) {
             callback.onFailure("Người dùng chưa đăng nhập");
@@ -60,7 +60,7 @@ public class CartRepository {
                     .addOnSuccessListener(cartDoc -> {
                         int currentInCart = 0;
                         if (cartDoc.exists()) {
-                            Item existingItem = cartDoc.toObject(Item.class);
+                            OrderItem existingItem = cartDoc.toObject(OrderItem.class);
                             if (existingItem != null) {
                                 currentInCart = existingItem.getQuantity();
                             }
@@ -71,7 +71,7 @@ public class CartRepository {
                         } else {
                             // Thực hiện thêm/cập nhật như cũ
                             if (cartDoc.exists()) {
-                                Item existingItem = cartDoc.toObject(Item.class);
+                                OrderItem existingItem = cartDoc.toObject(OrderItem.class);
                                 if (existingItem != null) {
                                     existingItem.setQuantity(total);
                                     updateCartItem(userId, existingItem, callback);
@@ -88,7 +88,7 @@ public class CartRepository {
             .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra tồn kho: " + e.getMessage()));
     }
 
-    private void addNewCartItem(String userId, Item item, CartCallback callback) {
+    private void addNewCartItem(String userId, OrderItem item, CartCallback callback) {
         db.collection("users").document(userId)
                 .collection("cart")
                 .document(item.getProductId())
@@ -97,7 +97,7 @@ public class CartRepository {
                 .addOnFailureListener(e -> callback.onFailure("Lỗi thêm vào giỏ hàng: " + e.getMessage()));
     }
 
-    private void updateCartItem(String userId, Item item, CartCallback callback) {
+    private void updateCartItem(String userId, OrderItem item, CartCallback callback) {
         db.collection("users").document(userId)
                 .collection("cart")
                 .document(item.getProductId())
@@ -117,9 +117,9 @@ public class CartRepository {
                 .collection("cart")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
-                    List<Item> items = new ArrayList<>();
+                    List<OrderItem> items = new ArrayList<>();
                     for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                        Item item = document.toObject(Item.class);
+                        OrderItem item = document.toObject(OrderItem.class);
                         if (item != null) {
                             items.add(item);
                         }
@@ -164,7 +164,7 @@ public class CartRepository {
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
-                        Item item = documentSnapshot.toObject(Item.class);
+                        OrderItem item = documentSnapshot.toObject(OrderItem.class);
                         if (item != null) {
                             item.setQuantity(newQuantity);
                             updateCartItem(userId, item, callback);

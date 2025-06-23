@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.data.repository.CartRepository;
 import com.example.plantshop.data.repository.ProductRepository;
@@ -15,7 +15,7 @@ public class ProductDetailViewModel extends ViewModel {
 
     private final MutableLiveData<Product> product = new MutableLiveData<>();
     private final MutableLiveData<Integer> quantity = new MutableLiveData<>(1);
-    private final MutableLiveData<Double> totalPrice = new MutableLiveData<>();
+    private final MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>(false);
     private final MutableLiveData<String> message = new MutableLiveData<>();
@@ -28,7 +28,7 @@ public class ProductDetailViewModel extends ViewModel {
         return quantity;
     }
 
-    public LiveData<Double> getTotalPrice() {
+    public LiveData<Integer> getTotalPrice() {
         return totalPrice;
     }
 
@@ -104,7 +104,7 @@ public class ProductDetailViewModel extends ViewModel {
         isLoading.setValue(true);
         isSuccess.setValue(false);
 
-        Item item = new Item(p.getId(), p.getName(), q, p.getPrice(), p.getImageUrl());
+        OrderItem item = new OrderItem(p.getId(), p.getName(), q, p.getPrice(), p.getImageUrl());
 
         cartRepository.addToCart(item, new CartRepository.CartCallback() {
             @Override

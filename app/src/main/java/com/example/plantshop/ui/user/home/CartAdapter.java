@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 import com.google.android.material.button.MaterialButton;
 
 import java.text.NumberFormat;
@@ -22,17 +22,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private List<Item> items;
+    private List<OrderItem> items;
     private final CartItemListener listener;
     private Set<String> selectedItemIds = new HashSet<>();
 
     public interface CartItemListener {
-        void onQuantityChanged(Item item, int newQuantity);
-        void onRemoveItem(Item item);
-        void onItemCheckedChanged(Item item, boolean isChecked);
+        void onQuantityChanged(OrderItem item, int newQuantity);
+        void onRemoveItem(OrderItem item);
+        void onItemCheckedChanged(OrderItem item, boolean isChecked);
     }
 
-    public CartAdapter(List<Item> items, CartItemListener listener) {
+    public CartAdapter(List<OrderItem> items, CartItemListener listener) {
         this.items = items;
         this.listener = listener;
     }
@@ -55,7 +55,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return items.size();
     }
 
-    public void updateItems(List<Item> newItems) {
+    public void updateItems(List<OrderItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
     }
@@ -64,7 +64,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return selectedItemIds;
     }
 
-    public List<Item> getItems() {
+    public List<OrderItem> getItems() {
         return items;
     }
 
@@ -87,7 +87,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             checkbox = itemView.findViewById(R.id.checkbox);
         }
 
-        public void bind(Item item) {
+        public void bind(OrderItem item) {
             tvProductName.setText(item.getProductName());
             tvPrice.setText(formatPrice(item.getPrice()));
             tvQuantity.setText(String.valueOf(item.getQuantity()));

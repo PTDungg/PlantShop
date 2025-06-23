@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.repository.CartRepository;
 
 import java.util.List;
@@ -13,12 +13,12 @@ public class CartViewModel extends ViewModel {
 
     private final CartRepository cartRepository = CartRepository.getInstance();
 
-    private final MutableLiveData<List<Item>> cartItems = new MutableLiveData<>();
+    private final MutableLiveData<List<OrderItem>> cartItems = new MutableLiveData<>();
     private final MutableLiveData<Double> totalPrice = new MutableLiveData<>(0.0);
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<String> message = new MutableLiveData<>();
 
-    public LiveData<List<Item>> getCartItems() { return cartItems; }
+    public LiveData<List<OrderItem>> getCartItems() { return cartItems; }
     public LiveData<Double> getTotalPrice() { return totalPrice; }
     public LiveData<Boolean> getIsLoading() { return isLoading; }
     public LiveData<String> getMessage() { return message; }
@@ -27,7 +27,7 @@ public class CartViewModel extends ViewModel {
         isLoading.setValue(true);
         cartRepository.getCartItems(new CartRepository.CartItemsCallback() {
             @Override
-            public void onSuccess(List<Item> items) {
+            public void onSuccess(List<OrderItem> items) {
                 cartItems.setValue(items);
                 calculateTotalPrice(items);
                 isLoading.setValue(false);
@@ -94,10 +94,10 @@ public class CartViewModel extends ViewModel {
         });
     }
 
-    private void calculateTotalPrice(List<Item> items) {
+    private void calculateTotalPrice(List<OrderItem> items) {
         double total = 0.0;
         if (items != null) {
-            for (Item item : items) {
+            for (OrderItem item : items) {
                 total += item.getPrice() * item.getQuantity();
             }
         }

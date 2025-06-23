@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -101,24 +101,24 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
     }
 
     @Override
-    public void onQuantityChanged(Item item, int newQuantity) {
+    public void onQuantityChanged(OrderItem item, int newQuantity) {
         viewModel.updateItemQuantity(item.getProductId(), newQuantity);
     }
 
     @Override
-    public void onRemoveItem(Item item) {
+    public void onRemoveItem(OrderItem item) {
         viewModel.removeFromCart(item.getProductId());
     }
 
     @Override
-    public void onItemCheckedChanged(Item item, boolean isChecked) {
+    public void onItemCheckedChanged(OrderItem item, boolean isChecked) {
         updateSelectedTotalPrice();
     }
 
     private void updateSelectedTotalPrice() {
         double total = 0.0;
         Set<String> selectedIds = adapter.getSelectedItemIds();
-        for (Item item : adapter.getItems()) {
+        for (OrderItem item : adapter.getItems()) {
             if (selectedIds.contains(item.getProductId())) {
                 total += item.getPrice() * item.getQuantity();
             }
