@@ -1,96 +1,114 @@
 package com.example.plantshop.data.Model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class Order {
-    private String id_order;
+public class Order implements Serializable {
+    private String orderId;
     private String orderDate;
-    private double totalAmount;
-    private String status;
-    private String userName;
-    private String phone;
-    private String address;
-    private List<Item> item;
+    private int totalAmount;
+    private boolean status;
+    private String customerName;
+    private String customerPhone;
+    private String customerAddress;
+    private List<OrderItem> items;
 
-    public Order() {
-        // Required empty constructor for Firestore
+
+    public Order(List<OrderItem> items) {
+        this.items = new ArrayList<>();
     }
 
-    public Order(String id_order, String orderDate, double totalAmount, String status,
-                 String userName, String phone, String address, List<Item> item) {
-        this.id_order = id_order;
+
+    public Order(String orderId, String orderDate, int totalAmount, boolean status,
+                 String customerName, String customerPhone, String customerAddress, List<OrderItem> items) {
+        this.orderId = orderId;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.status = status;
-        this.userName = userName;
-        this.phone = phone;
-        this.address = address;
-        this.item = item;
+        this.customerName = customerName;
+        this.customerPhone = customerPhone;
+        this.customerAddress = customerAddress;
+        this.items = items != null ? items : new ArrayList<>();
     }
 
-    // Getters and Setters
-    public String getId_order() {
-        return id_order;
+
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId_order(String id_order) {
-        this.id_order = id_order;
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
+
 
     public String getOrderDate() {
         return orderDate;
     }
 
+
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
 
-    public double getTotalAmount() {
+
+    public int getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(double totalAmount) {
+
+    public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
+
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+
+    public void setStatus(boolean status) {
         this.status = status;
     }
 
-    public String getUserName() {
-        return userName;
+
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public String getPhone() {
-        return phone;
+
+    public String getCustomerPhone() {
+        return customerPhone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
 
-    public String getAddress() {
-        return address;
+
+    public String getCustomerAddress() {
+        return customerAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
     }
 
-    public List<Item> getItem() {
-        return item;
+
+    public List<OrderItem> getItems() {
+        return items;
     }
 
-    public void setItem(List<Item> item) {
-        this.item = item;
+
+    public void setItems(List<OrderItem> items) {
+        this.items = items != null ? items : new ArrayList<>();
     }
 }
-
