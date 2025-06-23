@@ -93,5 +93,10 @@ public class ProductViewModel extends ViewModel {
             }
         });
     }
+
+    public void addProduct(Product product, Consumer<Boolean> callback) {
+        productRepository.addProduct(product, callback);
+        loadProducts();
+    }
 }
 
