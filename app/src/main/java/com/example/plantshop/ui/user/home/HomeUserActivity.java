@@ -78,23 +78,8 @@ public class HomeUserActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * Hàm này chỉ ẩn thanh điều hướng (navigation bar - thanh chứa nút Back, Home).
-     */
-    private void hideNavigationBar() {
-        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-        WindowInsetsControllerCompat windowInsetsController =
-                WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
-        // Ẩn thanh điều hướng
-        windowInsetsController.hide(WindowInsetsCompat.Type.navigationBars());
-        // Thiết lập hành vi
-        windowInsetsController.setSystemBarsBehavior(
-                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        );
-    }
 
     private void hideSystemUI() {
-        // Bật chế độ hiển thị tràn cạnh (edge-to-edge)
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
 
         WindowInsetsControllerCompat windowInsetsController =

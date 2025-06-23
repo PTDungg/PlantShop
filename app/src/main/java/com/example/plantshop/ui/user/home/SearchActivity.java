@@ -28,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
     private TextView tvRecentSearchTitle;
     private RecentSearchAdapter adapter;
     private SearchViewModel viewModel;
+    private boolean isGuest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
 
         // Lấy userId hiện tại
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        isGuest = (currentUser == null || currentUser.isAnonymous());
         String userId = (currentUser != null) ? currentUser.getUid() : null;
 
         // Khởi tạo ViewModel bằng Factory
