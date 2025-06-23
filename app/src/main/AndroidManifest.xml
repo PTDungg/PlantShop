@@ -34,6 +34,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.user.home.HomeUserActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ui.user.home.ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.SigupActivity"
@@ -56,6 +59,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.user.home.CartActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

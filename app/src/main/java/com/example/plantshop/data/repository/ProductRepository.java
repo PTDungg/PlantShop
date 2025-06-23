@@ -20,12 +20,15 @@ public class ProductRepository {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final StorageReference storageRef = FirebaseStorage.getInstance().getReference("product_images");
 
+    public interface SingleProductCallback {
+        void onCallback(Product product);
+    }
+
     public interface ProductCallback {
         void onResult(List<Product> products);
     }
 
     public void getAllProducts(ProductCallback callback) {
-        // Lấy tất cả sản phẩm từ Firestore
         db.collection("product")
                 .get(Source.SERVER)
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -42,6 +45,23 @@ public class ProductRepository {
                     // Trả về danh sách rỗng nếu thất bại
                     callback.onResult(new ArrayList<>());
                 });
+    }
+
+    public void getProductById(String productId, SingleProductCallback callback) {
+        db.collection("product").document(productId)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        Product product = documentSnapshot.toObject(Product.class);
+                        if (product != null) {
+                            product.setId(documentSnapshot.getId());
+                        }
+                        callback.onCallback(product);
+                    } else {
+                        callback.onCallback(null);
+                    }
+                })
+                .addOnFailureListener(e -> callback.onCallback(null));
     }
 
     public void checkProductExists(String productId, Consumer<Boolean> callback) {

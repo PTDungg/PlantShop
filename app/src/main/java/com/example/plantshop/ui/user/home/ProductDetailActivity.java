@@ -1,26 +1,31 @@
 package com.example.plantshop.ui.user.home;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.plantshop.R;
 
 public class ProductDetailActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_product_detail);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        String productId = getIntent().getStringExtra("PRODUCT_ID");
+        if (productId == null) {
+            finish();
+            return;
+        }
+        if (savedInstanceState == null) {
+            ProductDetailFragment fragment = new ProductDetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("productId", productId);
+            fragment.setArguments(bundle);
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, fragment)
+                    .commit();
+        }
     }
 }
