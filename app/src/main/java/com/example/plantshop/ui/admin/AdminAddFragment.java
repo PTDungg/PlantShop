@@ -208,14 +208,14 @@ public class AdminAddFragment extends Fragment {
                 product.setCategory(category.isEmpty() ? "" : category);
                 product.setAvailable(available);
                 product.setImageUrl(imageUrl);
-                productViewModel.addProduct(product, isSuccess -> {
-                    if (isSuccess) {
-                        showSuccessDialog();
-                        clearInputs();
-                    } else {
-                        Toast.makeText(getContext(), "Thêm sản phẩm thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                });
+//                productViewModel.addProduct(product, isSuccess -> {
+//                    if (isSuccess) {
+//                        showSuccessDialog();
+//                        clearInputs();
+//                    } else {
+//                        Toast.makeText(getContext(), "Thêm sản phẩm thất bại", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
             } else {
                 Toast.makeText(getContext(), "Lỗi tải ảnh lên", Toast.LENGTH_SHORT).show();
             }

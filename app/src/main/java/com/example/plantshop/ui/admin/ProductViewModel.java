@@ -31,6 +31,10 @@ public class ProductViewModel extends ViewModel {
         selectedProduct.setValue(product);
     }
 
+    public LiveData<List<Product>> getAllProducts() {
+        return allProducts;
+    }
+
     public void loadProducts() {
         productRepository.getAllProducts(products -> {
             allProducts.setValue(products);
@@ -90,3 +94,4 @@ public class ProductViewModel extends ViewModel {
         });
     }
 }
+

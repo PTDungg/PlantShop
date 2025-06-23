@@ -35,6 +35,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         notifyDataSetChanged();
     }
 
+    public void setData(List<Product> newProductList) {
+        this.productList.clear();
+        this.productList.addAll(newProductList);
+        notifyDataSetChanged(); // Thông báo cho RecyclerView cập nhật lại giao diện
+    }
+
     @NonNull
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
