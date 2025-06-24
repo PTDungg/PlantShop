@@ -35,11 +35,17 @@ public class UserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewModel = new ViewModelProvider(this).get(UserProfileViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(UserProfileViewModel.class);
         initViews(view);
         setupObservers();
         setupListeners();
         viewModel.loadUserData();
+
+        // Xử lý nút back trên app bar
+        View btnBack = view.findViewById(R.id.btn_back);
+        if (btnBack != null) {
+            btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+        }
     }
 
     private void initViews(View view) {
@@ -81,6 +87,7 @@ public class UserProfileFragment extends Fragment {
                 originalAddress = getText(etAddress);
                 originalPhone = getText(etPhone);
                 checkForChanges();
+                viewModel.resetIsSaved();
             }
         });
 

@@ -2,6 +2,7 @@ package com.example.plantshop.ui.user.home;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,21 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
 import com.google.android.material.button.MaterialButton;
+import com.example.plantshop.data.Utils.FormatUtils;
 
 public class ProductDetailFragment extends Fragment {
     private ProductDetailViewModel viewModel;
     private ImageView btnBack, btnCart, ivProductImage;
     private TextView tvTitle, tvProductName, tvPrice, tvStatus, tvQuantity, tvTotalPrice;
-    private MaterialButton btnDecrease, btnIncrease, btnAddToCart;
+    private MaterialButton btnDecrease, btnIncrease;
+    private AppCompatButton btnAddToCart;
     private ProgressBar progressBar;
     private String productId;
 
@@ -35,7 +39,8 @@ public class ProductDetailFragment extends Fragment {
             productId = getArguments().getString("productId");
         }
         if (productId == null) {
-            Toast.makeText(requireContext(), "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT).show();
+            Toast toast = Toast.makeText(requireContext(), "Không tìm thấy sản phẩm", Toast.LENGTH_SHORT);
+            toast.show();
             requireActivity().onBackPressed();
         }
     }
@@ -105,18 +110,18 @@ public class ProductDetailFragment extends Fragment {
             }
         });
         viewModel.getQuantity().observe(getViewLifecycleOwner(), quantity -> tvQuantity.setText(String.valueOf(quantity)));
-        viewModel.getTotalPrice().observe(getViewLifecycleOwner(), total -> tvTotalPrice.setText(formatPrice(total)));
+        viewModel.getTotalPrice().observe(getViewLifecycleOwner(), total -> tvTotalPrice.setText(formatPrice(total.intValue())));
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE));
         viewModel.getMessage().observe(getViewLifecycleOwner(), msg -> {
             if (!TextUtils.isEmpty(msg)) {
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                Toast toast = Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT);
+                toast.show();
                 viewModel.resetMessage();
             }
         });
     }
 
-    private static String formatPrice(Double price) {
-        if (price == null) return "";
-        return String.format("%,.0f VND", price);
+    private static String formatPrice(int price) {
+        return FormatUtils.formatPrice(price);
     }
 }

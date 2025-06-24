@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
 import com.google.android.material.button.MaterialButton;
+import com.example.plantshop.data.Utils.FormatUtils;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -22,17 +23,17 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder> {
-    private List<Item> items;
+    private List<OrderItem> items;
     private final CartItemListener listener;
     private Set<String> selectedItemIds = new HashSet<>();
 
     public interface CartItemListener {
-        void onQuantityChanged(Item item, int newQuantity);
-        void onRemoveItem(Item item);
-        void onItemCheckedChanged(Item item, boolean isChecked);
+        void onQuantityChanged(OrderItem item, int newQuantity);
+        void onRemoveItem(OrderItem item);
+        void onItemCheckedChanged(OrderItem item, boolean isChecked);
     }
 
-    public CartAdapter(List<Item> items, CartItemListener listener) {
+    public CartAdapter(List<OrderItem> items, CartItemListener listener) {
         this.items = items;
         this.listener = listener;
     }
@@ -55,7 +56,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return items.size();
     }
 
-    public void updateItems(List<Item> newItems) {
+    public void updateItems(List<OrderItem> newItems) {
         this.items = newItems;
         notifyDataSetChanged();
     }
@@ -64,13 +65,13 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
         return selectedItemIds;
     }
 
-    public List<Item> getItems() {
+    public List<OrderItem> getItems() {
         return items;
     }
 
     class CartViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImage;
-        private TextView tvProductName, tvPrice, tvQuantity, tvTotalPrice;
+        private TextView tvProductName, tvQuantity, tvTotalPrice;
         private MaterialButton btnDecrease, btnIncrease, btnRemove;
         private CheckBox checkbox;
 
@@ -78,7 +79,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             super(itemView);
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
             tvProductName = itemView.findViewById(R.id.tvProductName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
@@ -87,11 +87,10 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             checkbox = itemView.findViewById(R.id.checkbox);
         }
 
-        public void bind(Item item) {
+        public void bind(OrderItem item) {
             tvProductName.setText(item.getProductName());
-            tvPrice.setText(formatPrice(item.getPrice()));
             tvQuantity.setText(String.valueOf(item.getQuantity()));
-            tvTotalPrice.setText(formatPrice(item.getPrice() * item.getQuantity()));
+            tvTotalPrice.setText(FormatUtils.formatPrice(item.getPrice() * item.getQuantity()));
 
             // Set click listeners
             btnDecrease.setOnClickListener(v -> {
@@ -127,11 +126,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 }
                 listener.onItemCheckedChanged(item, isChecked);
             });
-        }
-
-        private String formatPrice(double price) {
-            NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-            return formatter.format(price);
         }
     }
 }

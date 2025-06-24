@@ -1,14 +1,14 @@
 package com.example.plantshop.ui.user.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Button;
 import android.widget.ImageView;
-import java.util.Locale;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
@@ -18,9 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Item;
+import com.example.plantshop.data.Model.OrderItem;
+import com.example.plantshop.data.Utils.FormatUtils;
+import com.example.plantshop.ui.user.home.checkout.CheckoutActivity;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -68,8 +69,27 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
 
         // Setup click listeners
         btnCheckout.setOnClickListener(v -> {
-            // Handle checkout logic
-            Toast.makeText(getContext(), "Chức năng đang phát triển", Toast.LENGTH_SHORT).show();
+            // Lấy danh sách sản phẩm đã chọn
+            Set<String> selectedIds = adapter.getSelectedItemIds();
+            List<OrderItem> selectedItems = new ArrayList<>();
+            int totalPrice = 0;
+            for (OrderItem item : adapter.getItems()) {
+                if (selectedIds.contains(item.getProductId())) {
+                    selectedItems.add(item);
+                    totalPrice += item.getPrice() * item.getQuantity();
+                }
+            }
+            // Nếu không chọn sản phẩm nào thì không cho vào trang Checkout
+            if (selectedItems.isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng chọn sản phẩm để thanh toán!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Chuyển sang trang Checkout bằng Activity và truyền dữ liệu
+            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
+            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
+            intent.putExtra("total_price", totalPrice);
+            requireContext().startActivity(intent);
         });
         btnClearCart.setOnClickListener(v -> {
             viewModel.clearCart();
@@ -101,29 +121,28 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
     }
 
     @Override
-    public void onQuantityChanged(Item item, int newQuantity) {
+    public void onQuantityChanged(OrderItem item, int newQuantity) {
         viewModel.updateItemQuantity(item.getProductId(), newQuantity);
     }
 
     @Override
-    public void onRemoveItem(Item item) {
+    public void onRemoveItem(OrderItem item) {
         viewModel.removeFromCart(item.getProductId());
     }
 
     @Override
-    public void onItemCheckedChanged(Item item, boolean isChecked) {
+    public void onItemCheckedChanged(OrderItem item, boolean isChecked) {
         updateSelectedTotalPrice();
     }
 
     private void updateSelectedTotalPrice() {
-        double total = 0.0;
+        int total = 0;
         Set<String> selectedIds = adapter.getSelectedItemIds();
-        for (Item item : adapter.getItems()) {
+        for (OrderItem item : adapter.getItems()) {
             if (selectedIds.contains(item.getProductId())) {
                 total += item.getPrice() * item.getQuantity();
             }
         }
-        NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-        tvTotalPrice.setText(formatter.format(total));
+        tvTotalPrice.setText(FormatUtils.formatPrice(total));
     }
 }
