@@ -15,7 +15,7 @@ public class ProductDetailViewModel extends ViewModel {
 
     private final MutableLiveData<Product> product = new MutableLiveData<>();
     private final MutableLiveData<Integer> quantity = new MutableLiveData<>(1);
-    private final MutableLiveData<Integer> totalPrice = new MutableLiveData<>();
+    private final MutableLiveData<Integer> totalPrice = new MutableLiveData<>(0);
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> isSuccess = new MutableLiveData<>(false);
     private final MutableLiveData<String> message = new MutableLiveData<>();
@@ -118,7 +118,7 @@ public class ProductDetailViewModel extends ViewModel {
             @Override
             public void onFailure(String error) {
                 isLoading.setValue(false);
-                message.setValue("Lỗi: " + error);
+                message.setValue(error);
             }
         });
     }

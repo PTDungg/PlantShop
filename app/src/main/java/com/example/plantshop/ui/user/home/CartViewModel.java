@@ -52,7 +52,7 @@ public class CartViewModel extends ViewModel {
 
             @Override
             public void onFailure(String error) {
-                message.setValue("Lỗi cập nhật số lượng: " + error);
+                message.setValue(error);
                 isLoading.setValue(false);
             }
         });

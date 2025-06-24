@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
 import com.google.android.material.button.MaterialButton;
+import com.example.plantshop.data.Utils.FormatUtils;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -70,7 +71,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     class CartViewHolder extends RecyclerView.ViewHolder {
         private ImageView ivProductImage;
-        private TextView tvProductName, tvPrice, tvQuantity, tvTotalPrice;
+        private TextView tvProductName, tvQuantity, tvTotalPrice;
         private MaterialButton btnDecrease, btnIncrease, btnRemove;
         private CheckBox checkbox;
 
@@ -78,7 +79,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             super(itemView);
             ivProductImage = itemView.findViewById(R.id.ivProductImage);
             tvProductName = itemView.findViewById(R.id.tvProductName);
-            tvPrice = itemView.findViewById(R.id.tvPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
             tvTotalPrice = itemView.findViewById(R.id.tvTotalPrice);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
@@ -89,9 +89,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
         public void bind(OrderItem item) {
             tvProductName.setText(item.getProductName());
-            tvPrice.setText(formatPrice(item.getPrice()));
             tvQuantity.setText(String.valueOf(item.getQuantity()));
-            tvTotalPrice.setText(formatPrice(item.getPrice() * item.getQuantity()));
+            tvTotalPrice.setText(FormatUtils.formatPrice(item.getPrice() * item.getQuantity()));
 
             // Set click listeners
             btnDecrease.setOnClickListener(v -> {
@@ -127,11 +126,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
                 }
                 listener.onItemCheckedChanged(item, isChecked);
             });
-        }
-
-        private String formatPrice(double price) {
-            NumberFormat formatter = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-            return formatter.format(price);
         }
     }
 }

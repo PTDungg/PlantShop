@@ -14,14 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.Product;
-import com.example.plantshop.ui.admin.ProductAdapter; // Giả sử bạn có Adapter này
+import com.example.plantshop.ui.admin.ProductAdapter;
 import com.example.plantshop.ui.admin.ProductViewModel;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class ListProductFragment extends Fragment {
 
@@ -77,6 +76,11 @@ public class ListProductFragment extends Fragment {
     private void setupRecyclerView() {
         // Khởi tạo adapter với danh sách rỗng ban đầu
         productAdapter = new ProductAdapter(new ArrayList<>());
+        productAdapter.setOnItemClickListener(product -> {
+            android.content.Intent intent = new android.content.Intent(getContext(), ProductDetailActivity.class);
+            intent.putExtra("PRODUCT_ID", product.getId());
+            startActivity(intent);
+        });
         recyclerView.setAdapter(productAdapter);
     }
 

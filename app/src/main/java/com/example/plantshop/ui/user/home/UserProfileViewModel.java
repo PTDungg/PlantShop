@@ -80,4 +80,8 @@ public class UserProfileViewModel extends ViewModel {
             }
         });
     }
+
+    public void resetIsSaved() {
+        isSaved.setValue(false);
+    }
 }

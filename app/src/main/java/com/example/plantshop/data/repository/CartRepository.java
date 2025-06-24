@@ -42,50 +42,50 @@ public class CartRepository {
 
         // Lấy số lượng còn lại thực tế từ Firestore
         FirebaseFirestore.getInstance().collection("product")
-            .document(item.getProductId())
-            .get()
-            .addOnSuccessListener(productDoc -> {
-                if (!productDoc.exists()) {
-                    callback.onFailure("Sản phẩm không tồn tại");
-                    return;
-                }
-                com.example.plantshop.data.Model.Product product = productDoc.toObject(com.example.plantshop.data.Model.Product.class);
-                int stock = product != null ? product.getQuantity() : 0;
+                .document(item.getProductId())
+                .get()
+                .addOnSuccessListener(productDoc -> {
+                    if (!productDoc.exists()) {
+                        callback.onFailure("Sản phẩm không tồn tại");
+                        return;
+                    }
+                    com.example.plantshop.data.Model.Product product = productDoc.toObject(com.example.plantshop.data.Model.Product.class);
+                    int stock = product != null ? product.getQuantity() : 0;
 
-                // Kiểm tra số lượng đã có trong giỏ hàng
-                db.collection("users").document(userId)
-                    .collection("cart")
-                    .document(item.getProductId())
-                    .get()
-                    .addOnSuccessListener(cartDoc -> {
-                        int currentInCart = 0;
-                        if (cartDoc.exists()) {
-                            OrderItem existingItem = cartDoc.toObject(OrderItem.class);
-                            if (existingItem != null) {
-                                currentInCart = existingItem.getQuantity();
-                            }
-                        }
-                        int total = currentInCart + item.getQuantity();
-                        if (total > stock) {
-                            callback.onFailure("Số lượng vượt quá tồn kho!");
-                        } else {
-                            // Thực hiện thêm/cập nhật như cũ
-                            if (cartDoc.exists()) {
-                                OrderItem existingItem = cartDoc.toObject(OrderItem.class);
-                                if (existingItem != null) {
-                                    existingItem.setQuantity(total);
-                                    updateCartItem(userId, existingItem, callback);
-                                } else {
-                                    callback.onFailure("Lỗi khi đọc dữ liệu giỏ hàng");
+                    // Kiểm tra số lượng đã có trong giỏ hàng
+                    db.collection("users").document(userId)
+                            .collection("cart")
+                            .document(item.getProductId())
+                            .get()
+                            .addOnSuccessListener(cartDoc -> {
+                                int currentInCart = 0;
+                                if (cartDoc.exists()) {
+                                    OrderItem existingItem = cartDoc.toObject(OrderItem.class);
+                                    if (existingItem != null) {
+                                        currentInCart = existingItem.getQuantity();
+                                    }
                                 }
-                            } else {
-                                addNewCartItem(userId, item, callback);
-                            }
-                        }
-                    })
-                    .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra giỏ hàng: " + e.getMessage()));
-            })
-            .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra tồn kho: " + e.getMessage()));
+                                int total = currentInCart + item.getQuantity();
+                                if (total > stock) {
+                                    callback.onFailure("Số lượng vượt quá tồn kho!");
+                                } else {
+                                    // Thực hiện thêm/cập nhật như cũ
+                                    if (cartDoc.exists()) {
+                                        OrderItem existingItem = cartDoc.toObject(OrderItem.class);
+                                        if (existingItem != null) {
+                                            existingItem.setQuantity(total);
+                                            updateCartItem(userId, existingItem, callback);
+                                        } else {
+                                            callback.onFailure("Lỗi khi đọc dữ liệu giỏ hàng");
+                                        }
+                                    } else {
+                                        addNewCartItem(userId, item, callback);
+                                    }
+                                }
+                            })
+                            .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra giỏ hàng: " + e.getMessage()));
+                })
+                .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra tồn kho: " + e.getMessage()));
     }
 
     private void addNewCartItem(String userId, OrderItem item, CartCallback callback) {
@@ -158,26 +158,46 @@ public class CartRepository {
             return;
         }
 
-        db.collection("users").document(userId)
-                .collection("cart")
+        // Lấy số lượng tồn kho thực tế từ Firestore
+        FirebaseFirestore.getInstance().collection("product")
                 .document(productId)
                 .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        OrderItem item = documentSnapshot.toObject(OrderItem.class);
-                        if (item != null) {
-                            item.setQuantity(newQuantity);
-                            updateCartItem(userId, item, callback);
-                        } else {
-                            callback.onFailure("Lỗi khi đọc dữ liệu sản phẩm");
-                        }
-                    } else {
-                        callback.onFailure("Không tìm thấy sản phẩm trong giỏ hàng");
+                .addOnSuccessListener(productDoc -> {
+                    if (!productDoc.exists()) {
+                        callback.onFailure("Sản phẩm không tồn tại");
+                        return;
                     }
+                    com.example.plantshop.data.Model.Product product = productDoc.toObject(com.example.plantshop.data.Model.Product.class);
+                    int stock = product != null ? product.getQuantity() : 0;
+
+                    if (newQuantity > stock) {
+                        callback.onFailure("Số lượng vượt quá tồn kho!");
+                        return;
+                    }
+
+                    // Nếu hợp lệ, cập nhật số lượng trong giỏ hàng
+                    db.collection("users").document(userId)
+                            .collection("cart")
+                            .document(productId)
+                            .get()
+                            .addOnSuccessListener(documentSnapshot -> {
+                                if (documentSnapshot.exists()) {
+                                    OrderItem item = documentSnapshot.toObject(OrderItem.class);
+                                    if (item != null) {
+                                        item.setQuantity(newQuantity);
+                                        updateCartItem(userId, item, callback);
+                                    } else {
+                                        callback.onFailure("Lỗi khi đọc dữ liệu sản phẩm");
+                                    }
+                                } else {
+                                    callback.onFailure("Không tìm thấy sản phẩm trong giỏ hàng");
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                callback.onFailure("Lỗi cập nhật số lượng: " + e.getMessage());
+                            });
                 })
-                .addOnFailureListener(e -> {
-                    callback.onFailure("Lỗi cập nhật số lượng: " + e.getMessage());
-                });
+                .addOnFailureListener(e -> callback.onFailure("Lỗi kiểm tra tồn kho: " + e.getMessage()));
     }
 
     public void clearCart(CartCallback callback) {
