@@ -1,4 +1,4 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;

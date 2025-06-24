@@ -1,4 +1,4 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +16,7 @@ import com.example.plantshop.data.Model.OrderItem;
 import com.google.android.material.button.MaterialButton;
 import com.example.plantshop.data.Utils.FormatUtils;
 
-import java.text.NumberFormat;
 import java.util.List;
-import java.util.Locale;
 import java.util.HashSet;
 import java.util.Set;
 

@@ -13,13 +13,13 @@
         android:theme="@style/Theme.PlantShop"
         tools:targetApi="31">
         <activity
-            android:name=".ui.user.home.ProductDetailActivity"
+            android:name=".ui.user.ProductDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.user.home.ListProductActivity"
+            android:name=".ui.user.ListProductActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.user.home.SearchActivity"
+            android:name=".ui.user.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".ui.admin.FullScreenImageActivity"
@@ -33,10 +33,10 @@
             android:name=".ui.guest.HomeGuestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.user.home.HomeUserActivity"
+            android:name=".ui.user.HomeUserActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.user.home.ProductDetailActivity"
+            android:name=".ui.user.ProductDetailActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.SigupActivity"
@@ -60,9 +60,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.user.home.CartActivity"
+            android:name=".ui.user.CartActivity"
             android:exported="false" />
-        <activity android:name=".ui.user.home.CheckoutActivity"
+        <activity android:name=".ui.user.CheckoutActivity"
             android:exported="false" />
 
         <meta-data

@@ -19,7 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.plantshop.R;
-import com.example.plantshop.ui.user.home.HomeUserActivity;
+import com.example.plantshop.ui.user.HomeUserActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 

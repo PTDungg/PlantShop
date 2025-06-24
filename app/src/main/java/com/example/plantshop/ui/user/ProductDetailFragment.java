@@ -1,8 +1,7 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

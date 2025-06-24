@@ -23,43 +23,6 @@ public class MainActivity extends AppCompatActivity {
             Log.e("FirebaseCheck", "Firebase chưa kết nối!");
         }
 
-//        //
-//        // Lấy NavHostFragment từ layout
-//        NavHostFragment navHostFragment = (NavHostFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-//
-//        if (navHostFragment == null) {
-//            Log.e("MainActivity", "Không tìm thấy NavHostFragment!");
-//            return;
-//        }
-//
-//        NavController navController = navHostFragment.getNavController();
-//
-//        // Xác định NavGraph phù hợp với vai trò người dùng
-//        RoleManager.Role role = RoleManager.getCurrentRole();
-//        int navGraphResId;
-//
-//        if (role == null) {
-//            Log.w("RoleManager", "Vai trò chưa được thiết lập. Mặc định là Guest.");
-//            navGraphResId = R.navigation.nav_graph_guest;
-//        } else {
-//            switch (role) {
-//                case ADMIN:
-//                    navGraphResId = R.navigation.Admin  ;
-//                    break;
-//                case USER:
-//                    navGraphResId = R.navigation.nav_graph_user;
-//                    break;
-//                case GUEST:
-//                default:
-//                    navGraphResId = R.navigation.nav_graph_guest;
-//                    break;
-//            }
-//        }
-//
-//        // Thiết lập NavGraph theo vai trò
-//        NavGraph navGraph = navController.getNavInflater().inflate(navGraphResId);
-//        navController.setGraph(navGraph);
     }
 
 }

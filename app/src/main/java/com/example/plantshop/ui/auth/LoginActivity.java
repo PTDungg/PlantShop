@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.plantshop.ui.admin.AdminActivity;
-import com.example.plantshop.ui.user.home.HomeUserActivity;
+import com.example.plantshop.ui.user.HomeUserActivity;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;

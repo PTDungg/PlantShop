@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.plantshop.R;
 import com.example.plantshop.ui.admin.AdminActivity;
 import com.example.plantshop.ui.guest.HomeGuestActivity;
-import com.example.plantshop.ui.user.home.HomeUserActivity;
+import com.example.plantshop.ui.user.HomeUserActivity;
 
 public class SplashActivity extends AppCompatActivity {
     private AuthViewModel viewModel;

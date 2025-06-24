@@ -1,4 +1,4 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,7 +15,6 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.plantshop.data.Model.User;
 import com.example.plantshop.R;
 
 public class UserProfileFragment extends Fragment {
