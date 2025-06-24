@@ -10,8 +10,10 @@ public class Order implements Serializable {
     private int totalAmount;
     private boolean status;
     private String customerName;
+    private String customerEmail;
     private String customerPhone;
     private String customerAddress;
+
     private List<OrderItem> items;
 
 
@@ -21,12 +23,13 @@ public class Order implements Serializable {
 
 
     public Order(String orderId, String orderDate, int totalAmount, boolean status,
-                 String customerName, String customerPhone, String customerAddress, List<OrderItem> items) {
+                 String customerName,String customerEmail, String customerPhone, String customerAddress, List<OrderItem> items) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
         this.status = status;
         this.customerName = customerName;
+        this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;
         this.customerAddress = customerAddress;
         this.items = items != null ? items : new ArrayList<>();
@@ -82,6 +85,13 @@ public class Order implements Serializable {
         this.customerName = customerName;
     }
 
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
 
     public String getCustomerPhone() {
         return customerPhone;
