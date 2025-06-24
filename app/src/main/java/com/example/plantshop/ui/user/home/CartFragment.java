@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Utils.FormatUtils;
-import com.example.plantshop.ui.user.home.checkout.CheckoutActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,10 +85,10 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
             }
 
             // Chuyển sang trang Checkout bằng Activity và truyền dữ liệu
-            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
-            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
-            intent.putExtra("total_price", totalPrice);
-            requireContext().startActivity(intent);
+//            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
+//            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
+//            intent.putExtra("total_price", totalPrice);
+//            requireContext().startActivity(intent);
         });
         btnClearCart.setOnClickListener(v -> {
             viewModel.clearCart();
