@@ -28,7 +28,7 @@ public class AdminOrderDetailFragment extends Fragment {
     private RecyclerView rvOrderItems;
     private OrderItemAdapter itemAdapter;
     private Button btnConfirm;
-    private TextView tvCustomerName, tvCustomerPhone, tvCustomerAddress, tvTotalAmount;
+    private TextView tvCustomerName,tvCustomerEmail, tvCustomerPhone, tvCustomerAddress, tvTotalAmount;
 
     public AdminOrderDetailFragment() {
         // Required empty public constructor
@@ -49,6 +49,7 @@ public class AdminOrderDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_order_detail, container, false);
 
         tvCustomerName = view.findViewById(R.id.tvCustomerName);
+        tvCustomerEmail = view.findViewById(R.id.tvCustomerEmail);
         tvCustomerPhone = view.findViewById(R.id.tvCustomerPhone);
         tvCustomerAddress = view.findViewById(R.id.tvCustomerAddress);
         tvTotalAmount = view.findViewById(R.id.tvTotalAmount);
@@ -61,6 +62,7 @@ public class AdminOrderDetailFragment extends Fragment {
 
         if (order != null) {
             tvCustomerName.setText(order.getCustomerName());
+            tvCustomerEmail.setText(order.getCustomerEmail());
             tvCustomerPhone.setText(String.valueOf(order.getCustomerPhone()));
             tvCustomerAddress.setText(order.getCustomerAddress());
             tvTotalAmount.setText(String.format("%,d VNĐ", order.getTotalAmount()));
