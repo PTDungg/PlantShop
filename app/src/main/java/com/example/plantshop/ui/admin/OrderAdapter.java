@@ -13,6 +13,8 @@ import com.example.plantshop.data.Model.Order;
 import com.example.plantshop.data.Model.OrderItem;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHolder> {
@@ -28,7 +30,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
     }
 
     public void setOrders(List<Order> orders) {
-        this.orders = orders;
+        this.orders = orders != null ? new ArrayList<>(orders) : new ArrayList<>();
+        // Sắp xếp danh sách: status=false (Chưa xác nhận) lên trên, status=true (Đã xác nhận) xuống dưới
+        Collections.sort(this.orders, new Comparator<Order>() {
+            @Override
+            public int compare(Order o1, Order o2) {
+                // status=false trả về giá trị nhỏ hơn để ưu tiên lên trên
+                return Boolean.compare(o1.isStatus(), o2.isStatus());
+            }
+        });
         notifyDataSetChanged();
     }
 

@@ -72,6 +72,7 @@ public class AdminOrderDetailFragment extends Fragment {
                 Toast.makeText(getContext(), "Xác nhận đơn hàng thành công", Toast.LENGTH_SHORT).show();
                 btnConfirm.setEnabled(false);
                 order.setStatus(true);
+//                requireActivity().onBackPressed();
             });
         }
 
