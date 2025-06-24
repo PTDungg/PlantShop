@@ -7,6 +7,7 @@ import java.util.List;
 public class Order implements Serializable {
     private String orderId;
     private String orderDate;
+    private int totalQuantity;
     private int totalAmount;
     private boolean status;
     private String customerName;
@@ -16,16 +17,19 @@ public class Order implements Serializable {
 
     private List<OrderItem> items;
 
-
+    public Order() {
+        this.items = new ArrayList<>();
+    }
     public Order(List<OrderItem> items) {
         this.items = new ArrayList<>();
     }
 
 
-    public Order(String orderId, String orderDate, int totalAmount, boolean status,
+    public Order(String orderId, String orderDate,int totalQuantity, int totalAmount, boolean status,
                  String customerName,String customerEmail, String customerPhone, String customerAddress, List<OrderItem> items) {
         this.orderId = orderId;
         this.orderDate = orderDate;
+        this.totalQuantity = totalQuantity;
         this.totalAmount = totalAmount;
         this.status = status;
         this.customerName = customerName;
@@ -53,6 +57,16 @@ public class Order implements Serializable {
 
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
+    }
+
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
 
