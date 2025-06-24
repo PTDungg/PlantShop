@@ -40,7 +40,7 @@
                 android:textColor="#000000" />
 
             <TextView
-                android:id="@+id/tvTotalItems"
+                android:id="@+id/tvTotalQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tổng sản phẩm: 3"
@@ -48,7 +48,7 @@
                 android:layout_marginTop="4dp" />
 
             <TextView
-                android:id="@+id/tvTotalPrice"
+                android:id="@+id/tvTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tổng tiền: 480.000 VNĐ"
@@ -58,9 +58,9 @@
 
         <TextView
             android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="@string/underlined_confirmed"
+            android:text="@string/underlined_unconfirmed"
             android:textSize="14sp"
             android:textStyle="italic"
             android:textColor="#000000" />
