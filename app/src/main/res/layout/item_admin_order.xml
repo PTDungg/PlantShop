@@ -3,57 +3,58 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginVertical="8dp"
+    android:layout_marginHorizontal="4dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:padding="12dp">
 
 
         <ImageView
             android:id="@+id/imgProduct"
             android:layout_width="80dp"
             android:layout_height="80dp"
+            android:background="@drawable/bg_rounded"
             android:scaleType="centerCrop"
-            android:src="@drawable/img"
-            android:background="@drawable/bg_rounded" />
+            android:src="@drawable/img" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:layout_marginStart="12dp">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvCustomerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nguyễn Văn A"
-                android:textStyle="bold"
+                android:textColor="#000000"
                 android:textSize="16sp"
-                android:textColor="#000000" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvTotalQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Tổng sản phẩm: 3"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvTotalAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tổng tiền: 480.000 VNĐ"
-                android:textSize="14sp"
-                android:layout_marginTop="2dp" />
+                android:layout_marginTop="2dp"
+                android:text="480.000 VNĐ"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <TextView
@@ -61,8 +62,8 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/underlined_unconfirmed"
+            android:textColor="#000000"
             android:textSize="14sp"
-            android:textStyle="italic"
-            android:textColor="#000000" />
+            android:textStyle="italic" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
