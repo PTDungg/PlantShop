@@ -52,21 +52,16 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
         btnClearCart = view.findViewById(R.id.btnClearCart);
         btnBack = view.findViewById(R.id.btnBack);
 
-        // Setup RecyclerView
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CartAdapter(new ArrayList<>(), this);
         recyclerView.setAdapter(adapter);
 
-        // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(CartViewModel.class);
 
-        // Observe LiveData
         observeViewModel();
 
-        // Load cart items
         viewModel.loadCartItems();
 
-        // Setup click listeners
         btnCheckout.setOnClickListener(v -> {
             // Lấy danh sách sản phẩm đã chọn
             Set<String> selectedIds = adapter.getSelectedItemIds();
@@ -84,11 +79,12 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
                 return;
             }
 
-            // Chuyển sang trang Checkout bằng Activity và truyền dữ liệu
-//            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
-//            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
-//            intent.putExtra("total_price", totalPrice);
-//            requireContext().startActivity(intent);
+            // Chuyển sang trang Checkout
+            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
+            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
+            intent.putExtra("total_price", totalPrice);
+            requireContext().startActivity(intent);
+
         });
         btnClearCart.setOnClickListener(v -> {
             viewModel.clearCart();
@@ -102,13 +98,15 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
                 tvEmptyCart.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
                 btnCheckout.setEnabled(false);
+                adapter.updateItems(new ArrayList<>());
+                tvTotalPrice.setText(FormatUtils.formatPrice(0));
             } else {
                 tvEmptyCart.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 adapter.updateItems(items);
                 btnCheckout.setEnabled(true);
+                updateSelectedTotalPrice();
             }
-            updateSelectedTotalPrice();
         });
 
         viewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
