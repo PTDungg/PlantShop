@@ -45,7 +45,7 @@
                 android:layout_width="0dp"
                 android:layout_height="69dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Buy Your Favorite\nPlants, Only Here!"
+                android:text="Chào mừng bạn đến với\nthế giới cây xanh!"
                 android:textColor="@android:color/white"
                 android:paddingLeft="24dp"
                 android:textSize="24sp"
@@ -74,11 +74,11 @@
                 android:layout_marginHorizontal="24dp"
                 android:layout_marginBottom="4dp"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Log in"
+                android:text="ĐĂNG NHẬP"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:backgroundTint="@color/primary_green"
+                app:backgroundTint="@color/green"
                 app:cornerRadius="16dp" />
 
             <com.google.android.material.button.MaterialButton
@@ -86,13 +86,13 @@
                 android:layout_width="300dp"
                 android:layout_height="60dp"
                 android:layout_marginHorizontal="24dp"
-                android:text="Sign Up"
+                android:text="ĐĂNG KÝ"
                 android:fontFamily="@font/roboto_medium"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:cornerRadius="16dp"
-                app:strokeColor="@color/primary_green"
+                app:strokeColor="@color/green"
                 app:strokeWidth="2dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 

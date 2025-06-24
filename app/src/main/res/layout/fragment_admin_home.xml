@@ -33,15 +33,15 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/btnSerach"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_seatch"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="4dp" />
+<!--        <ImageView-->
+<!--            android:id="@+id/btnSerach"-->
+<!--            android:layout_width="32dp"-->
+<!--            android:layout_height="32dp"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:src="@drawable/ic_seatch"-->
+<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--            android:padding="4dp" />-->
 
     </RelativeLayout>
 

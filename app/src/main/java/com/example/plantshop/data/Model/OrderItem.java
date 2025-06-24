@@ -1,17 +1,22 @@
 package com.example.plantshop.data.Model;
 
-public class Item {
+
+import java.io.Serializable;
+
+
+public class OrderItem implements Serializable {
     private String productId;
     private String productName;
     private int quantity;
-    private double price;
+    private int price;
     private String imageUrl;
 
-    public Item() {
-        // Required empty constructor for Firestore
+
+    public OrderItem() {
     }
 
-    public Item(String productId, String productName, int quantity, double price, String imageUrl) {
+
+    public OrderItem(String productId, String productName, int quantity, int price,String imageUrl) {
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
@@ -44,11 +49,11 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -60,3 +65,4 @@ public class Item {
         this.imageUrl = imageUrl;
     }
 }
+
