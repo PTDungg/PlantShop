@@ -5,9 +5,13 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.plantshop.R;
@@ -15,7 +19,11 @@ import com.example.plantshop.ui.auth.WelcomeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AdminActivity extends AppCompatActivity {
+    private Bundle userBundle;
     private Button btnSigOut;
     private ViewPager2 viewPager;
 
@@ -25,10 +33,25 @@ public class AdminActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_admin);
 
+
+        AdminViewModel viewModel = new ViewModelProvider(this).get(AdminViewModel.class);
+
+        Map<String, String> userMap = new HashMap<>();
+        userMap.put("id", getIntent().getStringExtra("id"));
+        userMap.put("email", getIntent().getStringExtra("email"));
+        userMap.put("name", getIntent().getStringExtra("name"));
+        userMap.put("phone", getIntent().getStringExtra("phone"));
+        userMap.put("address", getIntent().getStringExtra("address"));
+        userMap.put("role", getIntent().getStringExtra("role"));
+
+        viewModel.setUserData(userMap);
+
+
         // Thiết lập ViewPager2
         viewPager = findViewById(R.id.view_page2_home_admin);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         if (viewPager != null) {
-            viewPager.setAdapter(new ViewPagerAdapter(this));
+            viewPager.setAdapter(adapter);
             viewPager.setUserInputEnabled(true); // Trượt tay
 
             // Thêm listener để đồng bộ với BottomNavigationView khi trượt
@@ -80,21 +103,31 @@ public class AdminActivity extends AppCompatActivity {
             });
         }
 
-        // Thiết lập Button Đăng xuất
-        btnSigOut = findViewById(R.id.btnSigOut);
-        if (btnSigOut != null) {
-            btnSigOut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseAuth.getInstance().signOut();
-                    Intent intent = new Intent(AdminActivity.this, WelcomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+        // Xử lý back
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                FrameLayout overlay = findViewById(R.id.fragment_overlay_container);
+                if (overlay.getVisibility() == View.VISIBLE) {
+                    overlay.setVisibility(View.GONE);
+                    getSupportFragmentManager().popBackStack(); // pop fragment overlay
+                } else {
+                    // Nếu không có overlay, xử lý back như bình thường
+                    setEnabled(false); // bỏ chặn callback này
+                    getOnBackPressedDispatcher().onBackPressed(); // gọi lại back mặc định
                 }
-            });
-        } else {
-            android.util.Log.e("AdminActivity", "Button btnSigOut not found in layout");
-        }
+            }
+        });
     }
+
+    public void showOverlayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_overlay_container, fragment)
+                .addToBackStack("overlay")
+                .commit();
+
+        findViewById(R.id.fragment_overlay_container).setVisibility(View.VISIBLE);
+    }
+
 }

@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new AdminAddFragment();
             case 2:
-                return new AdminNotiFragment();
+                return new AdminOrderFragment();
             case 3:
                 return new AdminProfileFragment();
             default:

@@ -10,12 +10,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.Map;
+
 public class AuthViewModel extends ViewModel {
     private AuthRepository authRepository;
     private final UserRepository userRepository = new UserRepository();
     private final MutableLiveData<FirebaseUser> userLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
     private final MutableLiveData<String> userRoleLiveData = new MutableLiveData<>(); // LiveData cho vai trò
+    private final MutableLiveData<Map<String, String>> userInfoLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> guestLoginSuccess= new MutableLiveData<>();
     private final MutableLiveData<Boolean> isUserLoggedIn = new MutableLiveData<>(); // Thêm LiveData cho trạng thái đăng nhập
 
@@ -38,27 +41,39 @@ public class AuthViewModel extends ViewModel {
     public LiveData<Boolean> getIsUserLoggedIn() {
         return isUserLoggedIn;
     }
+    public LiveData<Map<String, String>> getUserInfo() {
+        return userInfoLiveData;
+    }
+
 
     public void checkUserStatus() {
         FirebaseUser currentUser = authRepository.getCurrentUser();
         if (currentUser != null) {
             isUserLoggedIn.setValue(true);
-            authRepository.getUserRole(currentUser.getUid(), new AuthRepository.RoleCallback() {
+            String uid = currentUser.getUid();
+            authRepository.getUserInfo(uid, new AuthRepository.UserInfoCallback() {
                 @Override
-                public void onSuccess(String role) {
-                    userRoleLiveData.setValue(role);
+                public void onSuccess(Map<String, String> userData) {
+                    if (userData != null) {
+                        userInfoLiveData.setValue(userData); // LiveData mới để trả về toàn bộ thông tin user
+                        String role = (String) userData.get("role");
+                        userRoleLiveData.setValue(role != null ? role : "USER");
+                    } else {
+                        errorLiveData.setValue("Không tìm thấy thông tin người dùng");
+                    }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    errorLiveData.setValue("Lỗi khi lấy vai trò: " + e.getMessage());
-                    userRoleLiveData.setValue("USER"); // Mặc định nếu lỗi
+                    errorLiveData.setValue("Lỗi khi lấy thông tin người dùng: " + e.getMessage());
+                    userRoleLiveData.setValue("USER");
                 }
             });
         } else {
             isUserLoggedIn.setValue(false);
         }
     }
+
     public void loginWithEmail(String email, String password){
         authRepository.loginWithEmail(email,password, new AuthRepository.EmailLoginCallback(){
             @Override
@@ -66,16 +81,17 @@ public class AuthViewModel extends ViewModel {
                 if (user != null) {
                     userLiveData.setValue(user);
                     // Lấy vai trò từ repository
-                    authRepository.getUserRole(user.getUid(), new AuthRepository.RoleCallback() {
+                    authRepository.getUserInfo(user.getUid(), new AuthRepository.UserInfoCallback() {
                         @Override
-                        public void onSuccess(String role) {
-                            userRoleLiveData.setValue(role);
+                        public void onSuccess(Map<String, String> userData) {
+                            userInfoLiveData.setValue(userData);
+                            userRoleLiveData.setValue(userData.get("role"));
                         }
 
                         @Override
                         public void onFailure(Exception e) {
-                            errorLiveData.setValue("Lỗi khi lấy vai trò: " + e.getMessage());
-                            userRoleLiveData.setValue("USER"); // Mặc định nếu lỗi
+                            errorLiveData.setValue("Lỗi khi lấy thông tin người dùng: " + e.getMessage());
+                            userRoleLiveData.setValue("USER");
                         }
                     });
                 } else {
