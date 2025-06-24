@@ -34,31 +34,86 @@
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />
 
-    <EditText
-        android:id="@+id/edtProductId"
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="ID sản phẩm"
-        android:inputType="text"
-        android:background="@android:drawable/edit_text"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/edtProductName"
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="ID"/>
+
+        <EditText
+            android:id="@+id/edtProductId"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:background="@android:drawable/edit_text" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Tên sản phẩm"
-        android:inputType="text"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
 
-    <EditText
-        android:id="@+id/edtProductPrice"
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="Tên"/>
+
+        <EditText
+            android:id="@+id/edtProductName"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:hint="Giá sản phẩm"
-        android:inputType="number"
-        android:layout_marginBottom="8dp" />
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
 
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="Giá"/>
+
+        <EditText
+            android:id="@+id/edtProductPrice"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="8dp">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:text="Số lượng"/>
+
+        <EditText
+            android:id="@+id/edtQuantity"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"/>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="300dp"
