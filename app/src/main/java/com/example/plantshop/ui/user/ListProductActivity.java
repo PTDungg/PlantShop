@@ -88,11 +88,6 @@ public class ListProductActivity extends AppCompatActivity {
 
     private void setupRecyclerView() {
         productAdapter = new ProductAdapter(new ArrayList<>());
-        productAdapter.setOnItemClickListener(product -> {
-            Intent intent = new Intent(ListProductActivity.this, ProductDetailActivity.class);
-            intent.putExtra("PRODUCT_ID", product.getId());
-            startActivity(intent);
-        });
         rvProductList.setAdapter(productAdapter);
     }
 

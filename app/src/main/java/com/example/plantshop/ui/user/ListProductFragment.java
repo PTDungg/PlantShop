@@ -5,12 +5,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.Product;
@@ -76,10 +79,19 @@ public class ListProductFragment extends Fragment {
     private void setupRecyclerView() {
         // Khởi tạo adapter với danh sách rỗng ban đầu
         productAdapter = new ProductAdapter(new ArrayList<>());
-        productAdapter.setOnItemClickListener(product -> {
-            android.content.Intent intent = new android.content.Intent(getContext(), ProductDetailActivity.class);
-            intent.putExtra("PRODUCT_ID", product.getId());
-            startActivity(intent);
+        productAdapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
+            @Override
+            public void onProductClick(Product product) {
+                // Ẩn ViewPager2 và TabLayout, hiện NavHostFragment
+                requireActivity().findViewById(R.id.viewPager).setVisibility(View.GONE);
+                requireActivity().findViewById(R.id.tab_layout).setVisibility(View.GONE);
+                requireActivity().findViewById(R.id.nav_host_fragment_user).setVisibility(View.VISIBLE);
+                // Chuyển sang Fragment chi tiết sản phẩm
+                Bundle bundle = new Bundle();
+                bundle.putString("productId", product.getId());
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+                navController.navigate(R.id.nav_product_detail, bundle);
+            }
         });
         recyclerView.setAdapter(productAdapter);
     }
@@ -115,5 +127,22 @@ public class ListProductFragment extends Fragment {
         String temp = Normalizer.normalize(s, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
         return pattern.matcher(temp).replaceAll("").toLowerCase().replace("đ", "d");
+    }
+
+    private void showHeaderAndBottomNav() {
+        View appBar = requireActivity().findViewById(R.id.app_bar_layout);
+        View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
+        if (appBar != null) appBar.setVisibility(View.VISIBLE);
+        if (bottomNav != null) bottomNav.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        showHeaderAndBottomNav();
+        // Hiện lại tabLayout và viewPager khi về Home
+        requireActivity().findViewById(R.id.tab_layout).setVisibility(View.VISIBLE);
+        requireActivity().findViewById(R.id.viewPager).setVisibility(View.VISIBLE);
+        requireActivity().findViewById(R.id.nav_host_fragment_user).setVisibility(View.GONE);
     }
 }

@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
@@ -44,6 +46,7 @@ public class ProductDetailFragment extends Fragment {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         isGuest = (currentUser == null || currentUser.isAnonymous());
 
+        // Lấy productId từ arguments (Bundle)
         if (getArguments() != null) {
             productId = getArguments().getString("productId");
         }
@@ -66,10 +69,7 @@ public class ProductDetailFragment extends Fragment {
         initViews(view);
         setupListeners();
         observeViewModel();
-
-        // Ẩn/hiện các element dựa trên trạng thái đăng nhập
         setupGuestMode();
-
         if (productId != null) {
             viewModel.loadProductById(productId);
         }
@@ -78,6 +78,7 @@ public class ProductDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        hideHeaderAndBottomNav();
         if (productId != null) {
             viewModel.loadProductById(productId);
         }
@@ -131,9 +132,9 @@ public class ProductDetailFragment extends Fragment {
             if (isGuest) {
                 showLoginPrompt();
             } else {
-                // Mở CartActivity
-                android.content.Intent intent = new android.content.Intent(requireContext(), CartActivity.class);
-                startActivity(intent);
+                // Chuyển sang Fragment Cart bằng NavController
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+                navController.navigate(R.id.nav_cart);
             }
         });
         btnDecrease.setOnClickListener(v -> viewModel.decreaseQuantity());
@@ -157,7 +158,7 @@ public class ProductDetailFragment extends Fragment {
                 tvTitle.setText(product.getName());
                 tvProductName.setText(product.getName());
                 tvPrice.setText(formatPrice(product.getPrice()));
-                if (product.getQuantity() > 0) {
+                if (product.isAvailable() && product.getQuantity() > 0) {
                     tvStatus.setText("Còn hàng");
                     tvStatus.setTextColor(requireContext().getColor(R.color.primary_green));
                     if (isGuest) {
@@ -212,5 +213,12 @@ public class ProductDetailFragment extends Fragment {
 
     private static String formatPrice(int price) {
         return FormatUtils.formatPrice(price);
+    }
+
+    private void hideHeaderAndBottomNav() {
+        View appBar = requireActivity().findViewById(R.id.app_bar_layout);
+        View bottomNav = requireActivity().findViewById(R.id.bottom_navigation);
+        if (appBar != null) appBar.setVisibility(View.GONE);
+        if (bottomNav != null) bottomNav.setVisibility(View.GONE);
     }
 }

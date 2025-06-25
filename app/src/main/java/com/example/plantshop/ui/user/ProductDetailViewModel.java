@@ -96,7 +96,7 @@ public class ProductDetailViewModel extends ViewModel {
             message.setValue("Thông tin sản phẩm không hợp lệ");
             return;
         }
-        if (!p.isAvailable() || p.getQuantity() <= 0) {
+        if (!p.isAvailable()) {
             message.setValue("Sản phẩm đã hết hàng, không thể thêm vào giỏ!");
             return;
         }

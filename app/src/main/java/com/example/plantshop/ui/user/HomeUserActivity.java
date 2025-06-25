@@ -19,6 +19,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
@@ -42,6 +46,7 @@ public class HomeUserActivity extends AppCompatActivity {
     private ImageView btnMenu, btnSearch;
     private ViewPager2 viewPager;
     private BottomNavigationView bottomNavigation;
+    private NavController navController;
 
     private final List<String> tabTitles = List.of("Tất cả", "Sen đá", "Xương rồng", "Cây cảnh", "Hoa");
     private ProductViewModel productViewModel;
@@ -56,9 +61,18 @@ public class HomeUserActivity extends AppCompatActivity {
         hideSystemUI();
         hideSystemBar();
         initViews();
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_user);
+        if (navHostFragment != null) {
+            navController = navHostFragment.getNavController();
+        }
         setupListeners();
         setupViewPagerWithTabs();
         updateNavHeader();
+
+        // Mặc định hiển thị tab Home, ẩn NavHostFragment
+        viewPager.setVisibility(View.VISIBLE);
+        tabLayout.setVisibility(View.VISIBLE);
+        findViewById(R.id.nav_host_fragment_user).setVisibility(View.GONE);
 
         if (savedInstanceState == null) {
             productViewModel.loadProducts();
@@ -161,15 +175,32 @@ public class HomeUserActivity extends AppCompatActivity {
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.bottom_nav_home) {
+                // Clear back stack về Home
+                if (navController != null) {
+                    navController.popBackStack(R.id.nav_list_product, false);
+                }
+                viewPager.setVisibility(View.VISIBLE);
+                tabLayout.setVisibility(View.VISIBLE);
+                findViewById(R.id.nav_host_fragment_user).setVisibility(View.GONE);
                 return true;
-            } else if (itemId == R.id.bottom_nav_cart) {
-                Intent intent = new Intent(HomeUserActivity.this, CartActivity.class);
-                startActivity(intent);
-                return false;
-            } else if (itemId == R.id.bottom_nav_account) {
-                Intent intent = new Intent(HomeUserActivity.this, UserProfileActivity.class);
-                startActivity(intent);
-                return false;
+            } else {
+                viewPager.setVisibility(View.GONE);
+                tabLayout.setVisibility(View.GONE);
+                findViewById(R.id.nav_host_fragment_user).setVisibility(View.VISIBLE);
+                if (navController != null) {
+                    if (itemId == R.id.bottom_nav_cart) {
+                        navController.popBackStack(R.id.nav_cart, false);
+                        navController.navigate(R.id.nav_cart);
+                        return true;
+                    } else if (itemId == R.id.bottom_nav_account) {
+                        navController.popBackStack(R.id.nav_profile, false);
+                        navController.navigate(R.id.nav_profile);
+                        return true;
+                    } else if (itemId == R.id.bottom_nav_bell) {
+                        Toast.makeText(this, "Chức năng Thông báo đang phát triển", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+                }
             }
             return false;
         });
@@ -223,10 +254,11 @@ public class HomeUserActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Nếu drawer đang mở, nhấn back sẽ đóng drawer lại thay vì thoát Activity
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
+        if (bottomNavigation != null && bottomNavigation.getSelectedItemId() != R.id.bottom_nav_home) {
+            // Nếu không ở Home, chuyển về Home
+            bottomNavigation.setSelectedItemId(R.id.bottom_nav_home);
         } else {
+            // Nếu đã ở Home, thoát app
             super.onBackPressed();
         }
     }
