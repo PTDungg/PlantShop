@@ -18,22 +18,32 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
+import com.example.plantshop.ui.guest.LoginPromptDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.example.plantshop.data.Utils.FormatUtils;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class ProductDetailFragment extends Fragment {
     private ProductDetailViewModel viewModel;
     private ImageView btnBack, btnCart, ivProductImage;
     private TextView tvTitle, tvProductName, tvPrice, tvStatus, tvQuantity, tvTotalPrice;
+    private TextView tvLabelQuantity, tvLabelTotal;
     private MaterialButton btnDecrease, btnIncrease;
     private AppCompatButton btnAddToCart;
     private ProgressBar progressBar;
     private String productId;
+    private boolean isGuest;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
+
+        // Kiểm tra trạng thái đăng nhập
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        isGuest = (currentUser == null || currentUser.isAnonymous());
+
         if (getArguments() != null) {
             productId = getArguments().getString("productId");
         }
@@ -56,6 +66,18 @@ public class ProductDetailFragment extends Fragment {
         initViews(view);
         setupListeners();
         observeViewModel();
+
+        // Ẩn/hiện các element dựa trên trạng thái đăng nhập
+        setupGuestMode();
+
+        if (productId != null) {
+            viewModel.loadProductById(productId);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         if (productId != null) {
             viewModel.loadProductById(productId);
         }
@@ -75,18 +97,58 @@ public class ProductDetailFragment extends Fragment {
         btnIncrease = view.findViewById(R.id.btnIncrease);
         btnAddToCart = view.findViewById(R.id.btnAddToCart);
         progressBar = view.findViewById(R.id.progressBar);
+        tvLabelQuantity = view.findViewById(R.id.tvLabelQuantity);
+        tvLabelTotal = view.findViewById(R.id.tvTotalLabel);
+    }
+
+    private void setupGuestMode() {
+        if (isGuest) {
+            btnDecrease.setVisibility(View.GONE);
+            btnIncrease.setVisibility(View.GONE);
+            tvQuantity.setVisibility(View.GONE);
+            tvTotalPrice.setVisibility(View.GONE);
+            btnAddToCart.setText("ĐĂNG NHẬP ĐỂ MUA");
+            btnAddToCart.setEnabled(true);
+            btnCart.setVisibility(View.GONE);
+            if (tvLabelQuantity != null) tvLabelQuantity.setVisibility(View.GONE);
+            if (tvLabelTotal != null) tvLabelTotal.setVisibility(View.GONE);
+        } else {
+            btnDecrease.setVisibility(View.VISIBLE);
+            btnIncrease.setVisibility(View.VISIBLE);
+            tvQuantity.setVisibility(View.VISIBLE);
+            tvTotalPrice.setVisibility(View.VISIBLE);
+            btnAddToCart.setText("THÊM VÀO GIỎ HÀNG");
+            btnAddToCart.setEnabled(true);
+            btnCart.setVisibility(View.VISIBLE);
+            if (tvLabelQuantity != null) tvLabelQuantity.setVisibility(View.VISIBLE);
+            if (tvLabelTotal != null) tvLabelTotal.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setupListeners() {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
         btnCart.setOnClickListener(v -> {
-            // Mở CartActivity
-            android.content.Intent intent = new android.content.Intent(requireContext(), CartActivity.class);
-            startActivity(intent);
+            if (isGuest) {
+                showLoginPrompt();
+            } else {
+                // Mở CartActivity
+                android.content.Intent intent = new android.content.Intent(requireContext(), CartActivity.class);
+                startActivity(intent);
+            }
         });
         btnDecrease.setOnClickListener(v -> viewModel.decreaseQuantity());
         btnIncrease.setOnClickListener(v -> viewModel.increaseQuantity());
-        btnAddToCart.setOnClickListener(v -> viewModel.addToCart());
+        btnAddToCart.setOnClickListener(v -> {
+            if (isGuest) {
+                showLoginPrompt();
+            } else {
+                viewModel.addToCart();
+            }
+        });
+    }
+
+    private void showLoginPrompt() {
+        new LoginPromptDialogFragment().show(getChildFragmentManager(), LoginPromptDialogFragment.TAG);
     }
 
     private void observeViewModel() {
@@ -95,8 +157,36 @@ public class ProductDetailFragment extends Fragment {
                 tvTitle.setText(product.getName());
                 tvProductName.setText(product.getName());
                 tvPrice.setText(formatPrice(product.getPrice()));
-                tvStatus.setText(product.isAvailable() ? "Còn hàng" : "Hết hàng");
-                tvStatus.setTextColor(requireContext().getColor(product.isAvailable() ? R.color.primary_green : android.R.color.holo_red_dark));
+                if (product.getQuantity() > 0) {
+                    tvStatus.setText("Còn hàng");
+                    tvStatus.setTextColor(requireContext().getColor(R.color.primary_green));
+                    if (isGuest) {
+                        btnAddToCart.setText("ĐĂNG NHẬP ĐỂ MUA");
+                        btnAddToCart.setEnabled(true);
+                        btnDecrease.setVisibility(View.GONE);
+                        btnIncrease.setVisibility(View.GONE);
+                        tvQuantity.setVisibility(View.GONE);
+                        tvTotalPrice.setVisibility(View.GONE);
+                        btnCart.setVisibility(View.GONE);
+                    } else {
+                        btnAddToCart.setText("THÊM VÀO GIỎ HÀNG");
+                        btnAddToCart.setEnabled(true);
+                        btnDecrease.setVisibility(View.VISIBLE);
+                        btnIncrease.setVisibility(View.VISIBLE);
+                        tvQuantity.setVisibility(View.VISIBLE);
+                        tvTotalPrice.setVisibility(View.VISIBLE);
+                        btnCart.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    tvStatus.setText("Hết hàng");
+                    tvStatus.setTextColor(requireContext().getColor(android.R.color.holo_red_dark));
+                    btnAddToCart.setText("HẾT HÀNG");
+                    btnAddToCart.setEnabled(false);
+                    btnDecrease.setVisibility(View.GONE);
+                    btnIncrease.setVisibility(View.GONE);
+                    tvQuantity.setVisibility(View.GONE);
+                    tvTotalPrice.setVisibility(View.GONE);
+                }
                 if (!TextUtils.isEmpty(product.getImageUrl())) {
                     Glide.with(this)
                             .load(product.getImageUrl())

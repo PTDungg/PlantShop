@@ -30,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class HomeUserActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ImageView btnMenu, btnSearch;
     private ViewPager2 viewPager;
+    private BottomNavigationView bottomNavigation;
 
     private final List<String> tabTitles = List.of("Tất cả", "Sen đá", "Xương rồng", "Cây cảnh", "Hoa");
     private ProductViewModel productViewModel;
@@ -60,6 +62,14 @@ public class HomeUserActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             productViewModel.loadProducts();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (bottomNavigation != null) {
+            bottomNavigation.setSelectedItemId(R.id.bottom_nav_home);
         }
     }
 
@@ -100,6 +110,7 @@ public class HomeUserActivity extends AppCompatActivity {
         btnMenu = findViewById(R.id.btnMenu);
         btnSearch = findViewById(R.id.btnSearch);
         viewPager = findViewById(R.id.viewPager);
+        bottomNavigation = findViewById(R.id.bottom_navigation);
     }
 
     private void setupListeners() {
@@ -145,6 +156,22 @@ public class HomeUserActivity extends AppCompatActivity {
             // Đóng drawer sau khi một item được chọn
             drawerLayout.closeDrawer(GravityCompat.START);
             return true;
+        });
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_nav_home) {
+                return true;
+            } else if (itemId == R.id.bottom_nav_cart) {
+                Intent intent = new Intent(HomeUserActivity.this, CartActivity.class);
+                startActivity(intent);
+                return false;
+            } else if (itemId == R.id.bottom_nav_account) {
+                Intent intent = new Intent(HomeUserActivity.this, UserProfileActivity.class);
+                startActivity(intent);
+                return false;
+            }
+            return false;
         });
     }
 

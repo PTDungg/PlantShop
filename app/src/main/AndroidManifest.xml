@@ -62,6 +62,9 @@
         <activity
             android:name=".ui.user.CheckoutActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.user.UserProfileActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

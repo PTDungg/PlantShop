@@ -49,7 +49,7 @@ public class ProductRepository {
 
     public void getProductById(String productId, SingleProductCallback callback) {
         db.collection("product").document(productId)
-                .get()
+                .get(Source.SERVER)
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         Product product = documentSnapshot.toObject(Product.class);
@@ -181,4 +181,31 @@ public class ProductRepository {
             return null;
         }
     }
+
+    // Cập nhật tồn kho sản phẩm sau khi đặt hàng
+    public interface ProductUpdateCallback {
+        void onSuccess();
+        void onFailure(String error);
+    }
+
+    public void updateProductQuantity(String productId, int quantityToSubtract, ProductUpdateCallback callback) {
+        db.collection("product").document(productId)
+            .get()
+            .addOnSuccessListener(documentSnapshot -> {
+                if (documentSnapshot.exists()) {
+                    Long currentQuantity = documentSnapshot.getLong("quantity");
+                    if (currentQuantity == null) currentQuantity = 0L;
+                    long newQuantity = currentQuantity - quantityToSubtract;
+                    if (newQuantity < 0) newQuantity = 0;
+                    db.collection("product").document(productId)
+                        .update("quantity", newQuantity)
+                        .addOnSuccessListener(aVoid -> callback.onSuccess())
+                        .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+                } else {
+                    callback.onFailure("Sản phẩm không tồn tại");
+                }
+            })
+            .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
+    }
+
 }

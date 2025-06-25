@@ -37,7 +37,6 @@ public class OrderRepository {
                             for (QueryDocumentSnapshot itemDoc : itemSnapshots) {
                                 items.add(itemDoc.toObject(OrderItem.class));
                             }
-                            order.setItems(items);
                             orderList.add(order);
                             orders.setValue(orderList);
                         });
@@ -51,6 +50,7 @@ public class OrderRepository {
                 .addOnSuccessListener(aVoid -> {
                     // Status updated successfully
                 });
+
     }
 }
 
