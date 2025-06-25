@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.model.Product;
+import com.example.plantshop.data.Model.Product;
 
 import java.util.Arrays;
 

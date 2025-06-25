@@ -25,7 +25,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.model.Product;
+import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.data.repository.ProductRepository;
 
 public class AdminAddFragment extends Fragment {

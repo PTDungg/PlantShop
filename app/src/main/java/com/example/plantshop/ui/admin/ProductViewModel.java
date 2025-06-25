@@ -5,7 +5,7 @@ import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.plantshop.data.model.Product;
+import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.data.repository.ProductRepository;
 
 import java.util.ArrayList;

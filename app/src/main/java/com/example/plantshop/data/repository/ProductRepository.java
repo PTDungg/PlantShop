@@ -3,7 +3,7 @@ package com.example.plantshop.data.repository;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.plantshop.data.model.Product;
+import com.example.plantshop.data.Model.Product;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;

@@ -2,8 +2,8 @@ package com.example.plantshop.data.repository;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import com.example.plantshop.data.model.Order;
-import com.example.plantshop.data.model.OrderItem;
+import com.example.plantshop.data.Model.Order;
+import com.example.plantshop.data.Model.OrderItem;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
@@ -37,6 +37,7 @@ public class OrderRepository {
                             for (QueryDocumentSnapshot itemDoc : itemSnapshots) {
                                 items.add(itemDoc.toObject(OrderItem.class));
                             }
+                            order.setItems(items);
                             orderList.add(order);
                             orders.setValue(orderList);
                         });

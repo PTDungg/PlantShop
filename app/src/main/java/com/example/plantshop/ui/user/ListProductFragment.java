@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.model.Product;
+import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.ui.admin.ProductAdapter;
 import com.example.plantshop.ui.admin.ProductViewModel;
 

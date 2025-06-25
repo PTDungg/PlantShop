@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantshop.R;
-import com.example.plantshop.data.model.Order;
+import com.example.plantshop.data.Model.Order;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,5 +1,5 @@
 
-package com.example.plantshop.data.model;
+package com.example.plantshop.data.Model;
 
 import java.io.Serializable;
 

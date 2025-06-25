@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.plantshop.R;
-import com.example.plantshop.data.model.Order;
+import com.example.plantshop.data.Model.Order;
 
 public class AdminOrderFragment extends Fragment {
     private OrderViewModel orderViewModel;
