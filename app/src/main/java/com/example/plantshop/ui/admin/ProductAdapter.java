@@ -52,13 +52,23 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
         Product product = productList.get(position);
+        boolean isAvailable = product.getQuantity() > 0;
 
         holder.tvName.setText(product.getName());
         holder.tvPrice.setText(NumberFormat.getInstance().format(product.getPrice()) + " VNĐ");
-        holder.tvStatus.setText(product.isAvailable() ? "Còn hàng" : "Hết hàng");
-        holder.tvStatus.setTextColor(
-                product.isAvailable() ? holder.itemView.getContext().getColor(R.color.primary_green)
-                        : holder.itemView.getContext().getColor(android.R.color.holo_red_dark));
+        //holder.tvStatus.setText(product.isAvailable() ? "Còn hàng" : "Hết hàng");
+//        holder.tvStatus.setTextColor(
+//                product.isAvailable() ? holder.itemView.getContext().getColor(R.color.primary_green)
+//                        : holder.itemView.getContext().getColor(android.R.color.holo_red_dark));
+        if (isAvailable) {
+            // Nếu còn hàng
+            holder.tvStatus.setText("Còn hàng" );
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(R.color.primary_green));
+        } else {
+            // Nếu hết hàng
+            holder.tvStatus.setText("Hết hàng");
+            holder.tvStatus.setTextColor(holder.itemView.getContext().getColor(android.R.color.holo_red_dark));
+        }
 
         Glide.with(holder.itemView.getContext())
                 .load(product.getImageUrl())
