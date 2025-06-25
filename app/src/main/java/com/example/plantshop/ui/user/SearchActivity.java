@@ -1,4 +1,4 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,6 @@ import com.example.plantshop.data.viewmodel.SearchViewModelFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 

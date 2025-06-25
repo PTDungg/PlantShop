@@ -24,7 +24,6 @@ import java.util.Map;
 
 public class AdminActivity extends AppCompatActivity {
     private Bundle userBundle;
-    private Button btnSigOut;
     private ViewPager2 viewPager;
 
     @Override
@@ -68,7 +67,7 @@ public class AdminActivity extends AppCompatActivity {
                                 bottomNav.setSelectedItemId(R.id.nav_add);
                                 break;
                             case 2:
-                                bottomNav.setSelectedItemId(R.id.nav_noti);
+                                bottomNav.setSelectedItemId(R.id.nav_orders);
                                 break;
                             case 3:
                                 bottomNav.setSelectedItemId(R.id.nav_profile);
@@ -91,7 +90,7 @@ public class AdminActivity extends AppCompatActivity {
                             viewPager.setCurrentItem(0);
                         } else if (itemId == R.id.nav_add) {
                             viewPager.setCurrentItem(1);
-                        } else if (itemId == R.id.nav_noti) {
+                        } else if (itemId == R.id.nav_orders) {
                             viewPager.setCurrentItem(2);
                         } else if (itemId == R.id.nav_profile) {
                             viewPager.setCurrentItem(3);

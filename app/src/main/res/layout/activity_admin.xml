@@ -16,7 +16,6 @@
         android:layout_weight="1"
         app:navGraph="@navigation/nav_admin"/>
 
-
     <FrameLayout
         android:id="@+id/fragment_overlay_container"
         android:layout_width="match_parent"
@@ -26,9 +25,9 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:menu="@menu/bottom_nav_menu_admin"
-        app:itemHorizontalTranslationEnabled="false"/>
+        app:labelVisibilityMode="unlabeled"/>
 
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.plantshop.data.Model.User;
 import com.example.plantshop.data.repository.UserRepository;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.HashMap;
 import java.util.Map;
