@@ -18,4 +18,5 @@ public class UserProfileActivity extends AppCompatActivity {
                 .commit();
         }
     }
+
 } 

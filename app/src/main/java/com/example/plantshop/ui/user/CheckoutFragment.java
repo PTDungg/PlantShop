@@ -145,4 +145,5 @@ public class CheckoutFragment extends Fragment {
         });
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
     }
+
 }

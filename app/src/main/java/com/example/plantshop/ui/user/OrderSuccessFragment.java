@@ -31,4 +31,5 @@ public class OrderSuccessFragment extends Fragment {
             requireActivity().finish();
         });
     }
+
 }
