@@ -18,12 +18,7 @@ public class Order implements Serializable {
     private List<OrderItem> items;
 
     public Order() {
-        this.items = new ArrayList<>();
     }
-    public Order(List<OrderItem> items) {
-        this.items = new ArrayList<>();
-    }
-
 
     public Order(String orderId, String orderDate,int totalQuantity, int totalAmount, boolean status,
                  String customerName,String customerEmail, String customerPhone, String customerAddress, List<OrderItem> items) {
