@@ -1,8 +1,6 @@
 package com.example.plantshop.data.Model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Order implements Serializable {
     private String orderId;
@@ -13,17 +11,10 @@ public class Order implements Serializable {
     private String customerEmail;
     private String customerPhone;
     private String customerAddress;
-
-    private List<OrderItem> items;
-
-
-    public Order(List<OrderItem> items) {
-        this.items = new ArrayList<>();
-    }
-
+    private int totalQuantity;
 
     public Order(String orderId, String orderDate, int totalAmount, boolean status,
-                 String customerName,String customerEmail, String customerPhone, String customerAddress, List<OrderItem> items) {
+                 String customerName, String customerEmail, String customerPhone, String customerAddress, int totalQuantity) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.totalAmount = totalAmount;
@@ -32,54 +23,44 @@ public class Order implements Serializable {
         this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;
         this.customerAddress = customerAddress;
-        this.items = items != null ? items : new ArrayList<>();
+        this.totalQuantity = totalQuantity;
     }
-
 
     public String getOrderId() {
         return orderId;
     }
 
-
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
-
 
     public String getOrderDate() {
         return orderDate;
     }
 
-
     public void setOrderDate(String orderDate) {
         this.orderDate = orderDate;
     }
-
 
     public int getTotalAmount() {
         return totalAmount;
     }
 
-
     public void setTotalAmount(int totalAmount) {
         this.totalAmount = totalAmount;
     }
-
 
     public boolean isStatus() {
         return status;
     }
 
-
     public void setStatus(boolean status) {
         this.status = status;
     }
 
-
     public String getCustomerName() {
         return customerName;
     }
-
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
@@ -97,28 +78,23 @@ public class Order implements Serializable {
         return customerPhone;
     }
 
-
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
     }
-
 
     public String getCustomerAddress() {
         return customerAddress;
     }
 
-
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
 
-
-    public List<OrderItem> getItems() {
-        return items;
+    public int getTotalQuantity() {
+        return totalQuantity;
     }
 
-
-    public void setItems(List<OrderItem> items) {
-        this.items = items != null ? items : new ArrayList<>();
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 }

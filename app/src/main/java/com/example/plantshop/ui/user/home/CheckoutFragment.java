@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Model.User;
 import com.example.plantshop.data.Utils.FormatUtils;
+import com.example.plantshop.data.repository.CheckoutRepository;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,7 @@ public class CheckoutFragment extends Fragment {
         tvUserPhone = view.findViewById(R.id.tvUserPhone);
         btnEditUserInfo = view.findViewById(R.id.btnEditUserInfo);
         ImageView btnBack = view.findViewById(R.id.btnBack);
+        MaterialButton btnOrder = view.findViewById(R.id.btnOrder);
 
         viewModel = new ViewModelProvider(this).get(CheckoutViewModel.class);
         userProfileViewModel = new ViewModelProvider(requireActivity()).get(UserProfileViewModel.class);
@@ -56,7 +60,6 @@ public class CheckoutFragment extends Fragment {
             userProfileViewModel.loadUserData();
         }
 
-        // RecyclerView setup
         orderItemAdapter = new OrderItemAdapter(new ArrayList<>());
         rvOrderItems.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOrderItems.setAdapter(orderItemAdapter);
@@ -94,12 +97,43 @@ public class CheckoutFragment extends Fragment {
                 tvUserEmail.setText(user.getEmail());
                 tvUserAddress.setText(user.getAddress());
                 tvUserPhone.setText(user.getPhone());
+                viewModel.setUser(user);
             } else {
                 tvUserName.setText("");
                 tvUserEmail.setText("");
                 tvUserAddress.setText("");
                 tvUserPhone.setText("");
             }
+        });
+
+        // Observe CheckoutViewModel
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            btnOrder.setEnabled(!isLoading);
+            btnOrder.setText(isLoading ? "Đang xử lý..." : "Đặt Hàng");
+        });
+
+        viewModel.getIsOrderSuccess().observe(getViewLifecycleOwner(), isSuccess -> {
+            if (isSuccess) {
+                // Chuyển sang màn hình thành công
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.checkout_fragment_container, new OrderSuccessFragment())
+                        .addToBackStack(null)
+                        .commit();
+                viewModel.resetOrderSuccess();
+            }
+        });
+
+        viewModel.getMessage().observe(getViewLifecycleOwner(), message -> {
+            if (message != null && !message.isEmpty()) {
+                Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+                viewModel.resetMessage();
+            }
+        });
+
+        // Xử lý đặt hàng
+        btnOrder.setOnClickListener(v -> {
+            viewModel.placeOrder();
         });
 
         btnEditUserInfo.setOnClickListener(v -> {
@@ -111,4 +145,4 @@ public class CheckoutFragment extends Fragment {
         });
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
     }
-} 
+}

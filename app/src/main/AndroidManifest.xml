@@ -33,6 +33,9 @@
             android:name=".ui.guest.HomeGuestActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.guest.GuestProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.user.home.HomeUserActivity"
             android:exported="true" />
         <activity
@@ -63,6 +66,9 @@
             android:name=".ui.user.home.CartActivity"
             android:exported="false" />
         <activity android:name=".ui.user.home.CheckoutActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.home.UserProfileActivity"
             android:exported="false" />
 
         <meta-data
