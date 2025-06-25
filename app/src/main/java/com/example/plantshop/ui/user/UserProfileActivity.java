@@ -1,8 +1,9 @@
-package com.example.plantshop.ui.user.home;
+package com.example.plantshop.ui.user;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.plantshop.R;
+import com.example.plantshop.ui.user.UserProfileFragment;
 
 public class UserProfileActivity extends AppCompatActivity {
     @Override
