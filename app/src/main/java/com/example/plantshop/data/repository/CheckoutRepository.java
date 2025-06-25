@@ -36,7 +36,8 @@ public class CheckoutRepository {
                 user.getName(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getAddress()
+                user.getAddress(),
+                items
         );
         db.collection("order").document(orderId)
                 .set(order)
@@ -140,5 +141,4 @@ public class CheckoutRepository {
                 });
         }
     }
-
 }
