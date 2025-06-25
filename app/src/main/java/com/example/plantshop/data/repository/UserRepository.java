@@ -1,6 +1,6 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.data.Model.User;
+import com.example.plantshop.data.model.User;
 import com.example.plantshop.utils.RoleManager; // Đảm bảo RoleManager tồn tại và đúng package
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

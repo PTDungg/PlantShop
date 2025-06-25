@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.plantshop.data.Model.OrderItem;
+import com.example.plantshop.data.model.OrderItem;
 import com.example.plantshop.data.repository.CartRepository;
 
 import java.util.List;

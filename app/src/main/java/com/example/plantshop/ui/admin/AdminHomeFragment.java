@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.ui.auth.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 

@@ -3,16 +3,14 @@ package com.example.plantshop.data.repository;
 import android.net.Uri;
 import android.util.Log;
 
-import com.example.plantshop.data.Model.Product;
+import com.example.plantshop.data.model.Product;
 import com.google.firebase.firestore.*;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageException;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ProductRepository {

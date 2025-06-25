@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.plantshop.data.Model.User;
+import com.example.plantshop.data.model.User;
 import com.example.plantshop.data.repository.UserRepository;
 
 import java.util.HashMap;

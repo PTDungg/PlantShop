@@ -1,7 +1,7 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.data.Model.OrderItem;
-import com.example.plantshop.data.Model.User;
+import com.example.plantshop.data.model.OrderItem;
+import com.example.plantshop.data.model.User;
 import java.util.List;
 
 public class CheckoutRepository {
