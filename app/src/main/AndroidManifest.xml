@@ -33,9 +33,6 @@
             android:name=".ui.guest.HomeGuestActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.guest.GuestProductDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.user.home.HomeUserActivity"
             android:exported="true" />
         <activity

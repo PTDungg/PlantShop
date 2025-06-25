@@ -84,6 +84,7 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
             intent.putExtra("order_items", (java.io.Serializable) selectedItems);
             intent.putExtra("total_price", totalPrice);
             requireContext().startActivity(intent);
+
         });
         btnClearCart.setOnClickListener(v -> {
             viewModel.clearCart();
