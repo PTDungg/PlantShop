@@ -103,4 +103,5 @@ public class CheckoutViewModel extends ViewModel {
     public void resetOrderSuccess() {
         isOrderSuccess.setValue(false);
     }
-} 
+
+}
