@@ -2,7 +2,7 @@ package com.example.plantshop.ui.admin;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.plantshop.data.Model.Order;
+import com.example.plantshop.data.model.Order;
 import com.example.plantshop.data.repository.OrderRepository;
 
 import java.util.List;

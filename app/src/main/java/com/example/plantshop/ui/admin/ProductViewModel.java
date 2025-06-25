@@ -5,12 +5,11 @@ import android.net.Uri;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.example.plantshop.data.Model.Product;
+import com.example.plantshop.data.model.Product;
 import com.example.plantshop.data.repository.ProductRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ProductViewModel extends ViewModel {

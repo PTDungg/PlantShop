@@ -1,6 +1,6 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.data.Model.OrderItem;
+import com.example.plantshop.data.model.OrderItem;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -49,7 +49,7 @@ public class CartRepository {
                         callback.onFailure("Sản phẩm không tồn tại");
                         return;
                     }
-                    com.example.plantshop.data.Model.Product product = productDoc.toObject(com.example.plantshop.data.Model.Product.class);
+                    com.example.plantshop.data.model.Product product = productDoc.toObject(com.example.plantshop.data.model.Product.class);
                     int stock = product != null ? product.getQuantity() : 0;
 
                     // Kiểm tra số lượng đã có trong giỏ hàng
@@ -167,7 +167,7 @@ public class CartRepository {
                         callback.onFailure("Sản phẩm không tồn tại");
                         return;
                     }
-                    com.example.plantshop.data.Model.Product product = productDoc.toObject(com.example.plantshop.data.Model.Product.class);
+                    com.example.plantshop.data.model.Product product = productDoc.toObject(com.example.plantshop.data.model.Product.class);
                     int stock = product != null ? product.getQuantity() : 0;
 
                     if (newQuantity > stock) {

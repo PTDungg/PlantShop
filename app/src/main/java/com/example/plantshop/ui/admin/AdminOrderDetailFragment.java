@@ -15,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Order;
-import com.example.plantshop.data.Model.OrderItem;
+import com.example.plantshop.data.model.Order;
+import com.example.plantshop.data.model.OrderItem;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;

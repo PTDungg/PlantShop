@@ -8,10 +8,8 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.text.Editable;
@@ -28,15 +26,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Product;
+import com.example.plantshop.data.model.Product;
 
 import java.util.Arrays;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminUpdateDeleteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AdminUpdateDeleteFragment extends Fragment {
     private ImageView imgProduct;
     private EditText edtId, edtName, edtPrice, edtQuantity;
@@ -51,7 +44,6 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private final String[] categories = {"", "sen đá", "xương rồng", "cây cảnh", "hoa"};
     private final String[] statuses = {"Còn hàng", "Hết hàng"};
     private ActivityResultLauncher<Intent> imagePickerLauncher;
-
 
     public AdminUpdateDeleteFragment() {
         // Required empty public constructor
@@ -92,7 +84,6 @@ public class AdminUpdateDeleteFragment extends Fragment {
                 }
         );
 
-
         productViewModel = new ViewModelProvider(requireActivity()).get(ProductViewModel.class);
 
         productViewModel.getSelectedProduct().observe(getViewLifecycleOwner(), product -> {
@@ -112,9 +103,6 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
         btnUpdate.setOnClickListener(v -> updateProduct());
         btnDelete.setOnClickListener(v -> deleteProduct());
-//        btnDelete.setOnClickListener(v -> {
-//            requireActivity().onBackPressed();
-//        });
 
         return view;
     }
@@ -145,6 +133,23 @@ public class AdminUpdateDeleteFragment extends Fragment {
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnStatus.setAdapter(statusAdapter);
+
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Khi chọn "Hết hàng" (position = 1), đặt edtQuantity về 0
+                // Khi chọn "Còn hàng" (position = 0), đặt edtQuantity thành 1 nếu đang là 0
+                if (position == 1) {
+                    edtQuantity.setText("0");
+                } else if (position == 0 && edtQuantity.getText().toString().trim().equals("0")) {
+                    edtQuantity.setText("1");
+                }
+                checkForChanges();
+            }
+        });
     }
 
     private void setupTextWatchers() {
@@ -154,6 +159,18 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Kiểm tra edtQuantity để cập nhật spnStatus
+                String quantityStr = edtQuantity.getText().toString().trim();
+                if (!quantityStr.isEmpty()) {
+                    try {
+                        int quantity = Integer.parseInt(quantityStr);
+                        // Nếu quantity = 0, đặt spnStatus thành "Hết hàng" (position = 1)
+                        // Nếu quantity > 0, đặt spnStatus thành "Còn hàng" (position = 0)
+                        spnStatus.setSelection(quantity == 0 ? 1 : 0);
+                    } catch (NumberFormatException e) {
+                        // Không làm gì nếu quantity không phải số hợp lệ
+                    }
+                }
                 checkForChanges();
             }
         };
@@ -162,7 +179,6 @@ public class AdminUpdateDeleteFragment extends Fragment {
         edtPrice.addTextChangedListener(watcher);
         edtQuantity.addTextChangedListener(watcher);
         spnCategory.setOnItemSelectedListener(new SpinnerChangedListener());
-        spnStatus.setOnItemSelectedListener(new SpinnerChangedListener());
     }
 
     private class SpinnerChangedListener implements AdapterView.OnItemSelectedListener {
@@ -202,12 +218,11 @@ public class AdminUpdateDeleteFragment extends Fragment {
                         } else {
                             Intent pick = new Intent(Intent.ACTION_PICK);
                             pick.setType("image/*");
-                            imagePickerLauncher.launch(pick); // 🔁 dùng launcher mới
+                            imagePickerLauncher.launch(pick);
                         }
                     })
                     .show();
         });
-
     }
 
     private void updateProduct() {
@@ -245,10 +260,10 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
     private void deleteProduct() {
         productViewModel.deleteProduct(originalProduct.getId(), success -> {
-                if (success) {
-                    Toast.makeText(getContext(), "Đã xoá sản phẩm", Toast.LENGTH_SHORT).show();
-                    requireActivity().onBackPressed();
-                }
+            if (success) {
+                Toast.makeText(getContext(), "Đã xoá sản phẩm", Toast.LENGTH_SHORT).show();
+                requireActivity().onBackPressed();
+            }
         });
     }
 }

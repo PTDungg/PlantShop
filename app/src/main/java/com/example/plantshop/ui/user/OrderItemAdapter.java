@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.OrderItem;
+import com.example.plantshop.data.model.OrderItem;
 import com.example.plantshop.data.Utils.FormatUtils;
 
 import java.util.List;

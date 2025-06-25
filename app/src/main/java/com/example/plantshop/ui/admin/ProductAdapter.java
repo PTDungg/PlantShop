@@ -1,16 +1,12 @@
 package com.example.plantshop.ui.admin;
 
-import android.os.Bundle;
 import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Product;
+import com.example.plantshop.data.model.Product;
 import java.text.NumberFormat;
 import java.util.*;
 

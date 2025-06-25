@@ -16,6 +16,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,18 +25,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.Product;
+import com.example.plantshop.data.model.Product;
 import com.example.plantshop.data.repository.ProductRepository;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.Arrays;
-import java.util.List;
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminAddFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AdminAddFragment extends Fragment {
     private EditText edtId, edtName, edtPrice, edtQuantity;
     private Spinner spnCategory, spnStatus;
@@ -48,7 +40,6 @@ public class AdminAddFragment extends Fragment {
     private final String[] categories = {"", "sen đá", "xương rồng", "cây cảnh", "hoa"};
     private final String[] statuses = {"Còn hàng", "Hết hàng"};
 
-
     public AdminAddFragment() {
         // Required empty public constructor
     }
@@ -56,7 +47,6 @@ public class AdminAddFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -102,6 +92,23 @@ public class AdminAddFragment extends Fragment {
         ArrayAdapter<String> statusAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, statuses);
         statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnStatus.setAdapter(statusAdapter);
+
+        spnStatus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // Khi chọn "Hết hàng" (position = 1), đặt edtQuantity về 0
+                // Khi chọn "Còn hàng" (position = 0), đặt edtQuantity thành 1 nếu đang là 0
+                if (position == 1) {
+                    edtQuantity.setText("0");
+                } else if (position == 0 && edtQuantity.getText().toString().trim().equals("0")) {
+                    edtQuantity.setText("1");
+                }
+                updateAddButtonState();
+            }
+        });
     }
 
     private void setupImagePicker() {
@@ -111,14 +118,28 @@ public class AdminAddFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         selectedImageUri = result.getData().getData();
                         imgProduct.setImageURI(selectedImageUri);
+                        updateAddButtonState();
                     }
                 }
         );
     }
-    private void setUpTextWatchers(){
+
+    private void setUpTextWatchers() {
         TextWatcher textWatcher = new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Kiểm tra edtQuantity để cập nhật spnStatus
+                String quantityStr = edtQuantity.getText().toString().trim();
+                if (!quantityStr.isEmpty()) {
+                    try {
+                        int quantity = Integer.parseInt(quantityStr);
+                        // Nếu quantity = 0, đặt spnStatus thành "Hết hàng" (position = 1)
+                        // Nếu quantity > 0, đặt spnStatus thành "Còn hàng" (position = 0)
+                        spnStatus.setSelection(quantity == 0 ? 1 : 0);
+                    } catch (NumberFormatException e) {
+                        // Không làm gì nếu quantity không phải số hợp lệ
+                    }
+                }
                 updateAddButtonState();
             }
             @Override public void afterTextChanged(Editable s) {}
@@ -128,8 +149,8 @@ public class AdminAddFragment extends Fragment {
         edtName.addTextChangedListener(textWatcher);
         edtPrice.addTextChangedListener(textWatcher);
         edtQuantity.addTextChangedListener(textWatcher);
-
     }
+
     private void pickImage() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
@@ -143,6 +164,7 @@ public class AdminAddFragment extends Fragment {
                 !TextUtils.isEmpty(edtPrice.getText().toString().trim()) &&
                 !TextUtils.isEmpty(edtQuantity.getText().toString().trim());
     }
+
     private void updateAddButtonState() {
         boolean isValid = validateInputs();
         btnAdd.setEnabled(isValid);
@@ -158,7 +180,6 @@ public class AdminAddFragment extends Fragment {
             }
         });
     }
-
 
     private void addProduct() {
         String id = edtId.getText().toString().trim();

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.plantshop.R;
-import com.example.plantshop.data.Model.User;
+import com.example.plantshop.data.model.User;
 
 import java.io.Serializable;
 
