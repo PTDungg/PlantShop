@@ -77,12 +77,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderViewHol
         void bind(Order order, OnItemClickListener listener) {
             tvCustomerName.setText(order.getCustomerName());
             tvTotalAmount.setText(String.format("%,d VNĐ", order.getTotalAmount()));
-
-            int totalQuantity = 0;
-            for (OrderItem item : order.getItems()) {
-                totalQuantity += item.getQuantity();
-            }
-            tvTotalQuantity.setText(String.format("%d sản phẩm", totalQuantity));
+            tvTotalQuantity.setText(String.format("%d sản phẩm", order.getTotalQuantity()));
 
             if (!order.getItems().isEmpty()) {
                 Glide.with(itemView.getContext())
