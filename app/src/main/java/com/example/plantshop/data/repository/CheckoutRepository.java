@@ -30,13 +30,13 @@ public class CheckoutRepository {
         Order order = new Order(
                 orderId,
                 orderDate,
+                totalQuantity,
                 totalPrice,
-                false, // status mặc định là false (chưa xử lý)
+                false,
                 user.getName(),
                 user.getEmail(),
                 user.getPhone(),
-                user.getAddress(),
-                totalQuantity
+                user.getAddress()
         );
         db.collection("order").document(orderId)
                 .set(order)

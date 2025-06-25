@@ -39,7 +39,7 @@ import java.util.Arrays;
  */
 public class AdminUpdateDeleteFragment extends Fragment {
     private ImageView imgProduct;
-    private EditText edtId, edtName, edtPrice;
+    private EditText edtId, edtName, edtPrice, edtQuantity;
     private Spinner spnCategory, spnStatus;
     private AppCompatButton btnUpdate, btnDelete;
 
@@ -53,46 +53,13 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private ActivityResultLauncher<Intent> imagePickerLauncher;
 
 
-
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     public AdminUpdateDeleteFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminUpdateDeleteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminUpdateDeleteFragment newInstance(String param1, String param2) {
-        AdminUpdateDeleteFragment fragment = new AdminUpdateDeleteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -105,6 +72,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
         edtId = view.findViewById(R.id.edtProductId);
         edtName = view.findViewById(R.id.edtProductName);
         edtPrice = view.findViewById(R.id.edtProductPrice);
+        edtQuantity = view.findViewById(R.id.edtQuantity);
         spnCategory = view.findViewById(R.id.spnCategory);
         spnStatus = view.findViewById(R.id.spnStatus);
         btnUpdate = view.findViewById(R.id.btnUpdate);
@@ -156,6 +124,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
         edtId.setEnabled(false);
         edtName.setText(p.getName());
         edtPrice.setText(String.valueOf(p.getPrice()));
+        edtQuantity.setText(String.valueOf(p.getQuantity()));
 
         // Set spinner category
         int catIndex = Arrays.asList(categories).indexOf(p.getCategory());
@@ -191,6 +160,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
 
         edtName.addTextChangedListener(watcher);
         edtPrice.addTextChangedListener(watcher);
+        edtQuantity.addTextChangedListener(watcher);
         spnCategory.setOnItemSelectedListener(new SpinnerChangedListener());
         spnStatus.setOnItemSelectedListener(new SpinnerChangedListener());
     }
@@ -205,12 +175,14 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private void checkForChanges() {
         String name = edtName.getText().toString().trim();
         String priceStr = edtPrice.getText().toString().trim();
+        String quantityStr = edtQuantity.getText().toString().trim();
         String category = spnCategory.getSelectedItem().toString();
         boolean available = spnStatus.getSelectedItemPosition() == 0;
 
         boolean changed =
                 !name.equals(originalProduct.getName()) ||
                         !priceStr.equals(String.valueOf(originalProduct.getPrice())) ||
+                        !quantityStr.equals(String.valueOf(originalProduct.getQuantity())) ||
                         !(category.equals(originalProduct.getCategory()) || (category.isEmpty() && originalProduct.getCategory() == null)) ||
                         (available != originalProduct.isAvailable()) ||
                         selectedImageUri != null;
@@ -241,6 +213,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
     private void updateProduct() {
         String name = edtName.getText().toString().trim();
         int price = Integer.parseInt(edtPrice.getText().toString().trim());
+        int quantity = Integer.parseInt(edtQuantity.getText().toString().trim());
         String category = spnCategory.getSelectedItem().toString().trim();
         boolean available = spnStatus.getSelectedItemPosition() == 0;
 
@@ -248,6 +221,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
         updated.setId(originalProduct.getId());
         updated.setName(name);
         updated.setPrice(price);
+        updated.setQuantity(quantity);
         updated.setCategory(category.isEmpty() ? "" : category);
         updated.setAvailable(available);
         updated.setImageUrl(originalProduct.getImageUrl()); // tạm thời

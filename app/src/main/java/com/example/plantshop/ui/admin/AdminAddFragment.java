@@ -37,7 +37,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class AdminAddFragment extends Fragment {
-    private EditText edtId, edtName, edtPrice;
+    private EditText edtId, edtName, edtPrice, edtQuantity;
     private Spinner spnCategory, spnStatus;
     private ImageView imgProduct;
     private Button btnAdd;
@@ -48,49 +48,14 @@ public class AdminAddFragment extends Fragment {
     private final String[] categories = {"", "sen đá", "xương rồng", "cây cảnh", "hoa"};
     private final String[] statuses = {"Còn hàng", "Hết hàng"};
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public AdminAddFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminAddFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminAddFragment newInstance(String param1, String param2) {
-        AdminAddFragment fragment = new AdminAddFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-//        if (success) {
-//            SuccessDialogFragment dialog = new SuccessDialogFragment();
-//            dialog.show(getParentFragmentManager(), "SuccessDialog");
-//        }
 
     }
 
@@ -102,6 +67,7 @@ public class AdminAddFragment extends Fragment {
         edtId = view.findViewById(R.id.edtProductId);
         edtName = view.findViewById(R.id.edtProductName);
         edtPrice = view.findViewById(R.id.edtProductPrice);
+        edtQuantity = view.findViewById(R.id.edtQuantity);
         spnCategory = view.findViewById(R.id.spnCategory);
         spnStatus = view.findViewById(R.id.spnStatus);
         imgProduct = view.findViewById(R.id.imgProduct);
@@ -161,6 +127,7 @@ public class AdminAddFragment extends Fragment {
         edtId.addTextChangedListener(textWatcher);
         edtName.addTextChangedListener(textWatcher);
         edtPrice.addTextChangedListener(textWatcher);
+        edtQuantity.addTextChangedListener(textWatcher);
 
     }
     private void pickImage() {
@@ -173,7 +140,8 @@ public class AdminAddFragment extends Fragment {
         return selectedImageUri != null &&
                 !TextUtils.isEmpty(edtId.getText().toString().trim()) &&
                 !TextUtils.isEmpty(edtName.getText().toString().trim()) &&
-                !TextUtils.isEmpty(edtPrice.getText().toString().trim());
+                !TextUtils.isEmpty(edtPrice.getText().toString().trim()) &&
+                !TextUtils.isEmpty(edtQuantity.getText().toString().trim());
     }
     private void updateAddButtonState() {
         boolean isValid = validateInputs();
@@ -196,6 +164,7 @@ public class AdminAddFragment extends Fragment {
         String id = edtId.getText().toString().trim();
         String name = edtName.getText().toString().trim();
         int price = Integer.parseInt(edtPrice.getText().toString().trim());
+        int quantity = Integer.parseInt(edtQuantity.getText().toString().trim());
         String category = spnCategory.getSelectedItem().toString().trim();
         boolean available = spnStatus.getSelectedItemPosition() == 0;
 
@@ -205,6 +174,7 @@ public class AdminAddFragment extends Fragment {
                 product.setId(id);
                 product.setName(name);
                 product.setPrice(price);
+                product.setQuantity(quantity);
                 product.setCategory(category.isEmpty() ? "" : category);
                 product.setAvailable(available);
                 product.setImageUrl(imageUrl);
@@ -226,6 +196,7 @@ public class AdminAddFragment extends Fragment {
         edtId.setText("");
         edtName.setText("");
         edtPrice.setText("");
+        edtQuantity.setText("");
         spnCategory.setSelection(0);
         spnStatus.setSelection(0);
         imgProduct.setImageResource(R.drawable.img_placeholder1);
