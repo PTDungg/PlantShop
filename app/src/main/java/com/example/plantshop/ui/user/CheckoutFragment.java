@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
@@ -63,7 +65,7 @@ public class CheckoutFragment extends Fragment {
         rvOrderItems.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOrderItems.setAdapter(orderItemAdapter);
 
-        // Nhận dữ liệu từ arguments và set vào ViewModel
+        // Nhận dữ liệu từ arguments (Bundle) khi chuyển qua NavController
         Bundle args = getArguments();
         if (args != null) {
             if (args.containsKey("total_price")) {
@@ -72,10 +74,6 @@ public class CheckoutFragment extends Fragment {
             if (args.containsKey("order_items")) {
                 List<OrderItem> items = (ArrayList<OrderItem>) args.getSerializable("order_items");
                 viewModel.setOrderItems(items);
-            }
-            if (args.containsKey("user")) {
-                User user = (User) args.getSerializable("user");
-                viewModel.setUser(user);
             }
         }
         // Observe LiveData và bind ra UI
@@ -113,12 +111,9 @@ public class CheckoutFragment extends Fragment {
 
         viewModel.getIsOrderSuccess().observe(getViewLifecycleOwner(), isSuccess -> {
             if (isSuccess) {
-                // Chuyển sang màn hình thành công
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.checkout_fragment_container, new OrderSuccessFragment())
-                        .addToBackStack(null)
-                        .commit();
+                // Chuyển sang màn hình thành công bằng NavController
+                NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+                navController.navigate(R.id.nav_order_success);
                 viewModel.resetOrderSuccess();
             }
         });
@@ -136,11 +131,8 @@ public class CheckoutFragment extends Fragment {
         });
 
         btnEditUserInfo.setOnClickListener(v -> {
-            requireActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.checkout_fragment_container, new UserProfileFragment())
-                    .addToBackStack(null)
-                    .commit();
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+            navController.navigate(R.id.nav_profile);
         });
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
     }

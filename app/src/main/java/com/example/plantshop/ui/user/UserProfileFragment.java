@@ -47,6 +47,7 @@ public class UserProfileFragment extends Fragment {
         }
     }
 
+
     private void initViews(View view) {
         etName = view.findViewById(R.id.et_name);
         etEmail = view.findViewById(R.id.et_email);
@@ -140,5 +141,17 @@ public class UserProfileFragment extends Fragment {
         etName.setEnabled(enabled);
         etAddress.setEnabled(enabled);
         etPhone.setEnabled(enabled);
+    }
+
+
+    private void hideHeaderAndBottomNav() {
+        View appBar = requireActivity().findViewById(R.id.app_bar_layout);
+        if (appBar != null) appBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideHeaderAndBottomNav();
     }
 }

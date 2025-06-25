@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
@@ -79,12 +81,12 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
                 return;
             }
 
-            // Chuyển sang trang Checkout
-            Intent intent = new Intent(requireContext(), CheckoutActivity.class);
-            intent.putExtra("order_items", (java.io.Serializable) selectedItems);
-            intent.putExtra("total_price", totalPrice);
-            requireContext().startActivity(intent);
-
+            // Chuyển sang Fragment Checkout bằng NavController
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("order_items", (java.io.Serializable) selectedItems);
+            bundle.putInt("total_price", totalPrice);
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+            navController.navigate(R.id.nav_checkout, bundle);
         });
         btnClearCart.setOnClickListener(v -> {
             viewModel.clearCart();
@@ -141,5 +143,16 @@ public class CartFragment extends Fragment implements CartAdapter.CartItemListen
             }
         }
         tvTotalPrice.setText(FormatUtils.formatPrice(total));
+    }
+
+    private void hideHeaderAndBottomNav() {
+        View appBar = requireActivity().findViewById(R.id.app_bar_layout);
+        if (appBar != null) appBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hideHeaderAndBottomNav();
     }
 }
