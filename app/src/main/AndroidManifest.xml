@@ -65,7 +65,7 @@
         <activity android:name=".ui.user.CheckoutActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.user.home.UserProfileActivity"
+            android:name=".ui.user.UserProfileActivity"
             android:exported="false" />
 
         <meta-data
