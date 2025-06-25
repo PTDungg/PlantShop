@@ -1,5 +1,6 @@
 package com.example.plantshop.data.repository;
 
+import com.example.plantshop.data.Model.Notification;
 import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Model.User;
 import com.example.plantshop.data.Model.Order;
@@ -58,6 +59,19 @@ public class CheckoutRepository {
                             .addOnSuccessListener(unused -> {
                                 successCount[0]++;
                                 if (successCount[0] == items.size() && !hasFailed[0]) {
+                                    // Gửi thông báo khi đặt hàng thành công
+                                    String imageUrl = items.isEmpty() ? "" : items.get(0).getImageUrl();
+                                    Notification notification = new Notification(
+                                            db.collection("users").document(user.getEmail()).collection("notifications").document().getId(),
+                                            orderId,
+                                            "Đơn hàng đã được đặt, chờ người bán xác nhận",
+                                            imageUrl,
+                                            new Date()
+                                    );
+                                    db.collection("users").document(user.getEmail())
+                                            .collection("notifications")
+                                            .document(notification.getId())
+                                            .set(notification);
                                     // Cập nhật số lượng sản phẩm và xóa giỏ hàng
                                     updateProductQuantities(items, () -> removeItemsFromCart(items, callback));
                                 }

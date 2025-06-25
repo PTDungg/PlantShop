@@ -196,9 +196,10 @@ public class HomeUserActivity extends AppCompatActivity {
                         navController.popBackStack(R.id.nav_profile, false);
                         navController.navigate(R.id.nav_profile);
                         return true;
-                    } else if (itemId == R.id.bottom_nav_bell) {
-                        Toast.makeText(this, "Chức năng Thông báo đang phát triển", Toast.LENGTH_SHORT).show();
-                        return false;
+                    } else if (itemId == R.id.bottom_nav_notification) {
+                        navController.popBackStack(R.id.nav_notification, false);
+                        navController.navigate(R.id.nav_notification);
+                        return true;
                     }
                 }
             }

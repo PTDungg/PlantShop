@@ -246,6 +246,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
                 if (success) {
                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                     btnUpdate.setEnabled(false);
+                    requireActivity().onBackPressed();
                 }
             });
         } else {
@@ -253,6 +254,7 @@ public class AdminUpdateDeleteFragment extends Fragment {
                 if (success) {
                     Toast.makeText(getContext(), "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                     btnUpdate.setEnabled(false);
+                    requireActivity().onBackPressed();
                 }
             });
         }

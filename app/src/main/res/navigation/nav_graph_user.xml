@@ -40,5 +40,10 @@
         android:name="com.example.plantshop.ui.user.OrderSuccessFragment"
         android:label="Order Success"
         tools:layout="@layout/fragment_order_success" />
+    <fragment
+        android:id="@+id/nav_notification"
+        android:name="com.example.plantshop.ui.user.UserNotificationFragment"
+        android:label="Notification"
+        tools:layout="@layout/fragment_user_notification"/>
 
 </navigation> 

@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_shopping_cart"
         android:title="Giỏ hàng" />
     <item
-        android:id="@+id/bottom_nav_bell"
+        android:id="@+id/bottom_nav_notification"
         android:icon="@drawable/ic_bell"
         android:title="Thông báo" />
     <item

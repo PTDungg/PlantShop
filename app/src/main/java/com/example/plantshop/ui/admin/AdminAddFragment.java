@@ -118,7 +118,6 @@ public class AdminAddFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                         selectedImageUri = result.getData().getData();
                         imgProduct.setImageURI(selectedImageUri);
-                        updateAddButtonState();
                     }
                 }
         );
