@@ -1,3 +1,4 @@
+
 package com.example.plantshop.ui.user;
 
 import android.os.Bundle;
@@ -40,10 +41,26 @@ public class UserProfileFragment extends Fragment {
         setupListeners();
         viewModel.loadUserData();
 
+        // Lấy flag fromCheckout từ arguments
+        boolean fromCheckout = false;
+        Bundle args = getArguments();
+        if (args != null) {
+            fromCheckout = args.getBoolean("fromCheckout", false);
+        }
+        final boolean finalFromCheckout = fromCheckout;
+
         // Xử lý nút back trên app bar
         View btnBack = view.findViewById(R.id.btn_back);
         if (btnBack != null) {
-            btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+            btnBack.setOnClickListener(v -> {
+                if (finalFromCheckout) {
+                    // Quay lại CheckoutFragment
+                    androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+                    navController.popBackStack(R.id.nav_checkout, false);
+                } else {
+                    requireActivity().onBackPressed();
+                }
+            });
         }
     }
 
@@ -83,6 +100,9 @@ public class UserProfileFragment extends Fragment {
 
         viewModel.getIsSaved().observe(getViewLifecycleOwner(), saved -> {
             if (saved != null && saved) {
+                if (isUserInfoChanged()) {
+                    Toast.makeText(getContext(), "Lưu thành công!", Toast.LENGTH_SHORT).show();
+                }
                 originalName = getText(etName);
                 originalAddress = getText(etAddress);
                 originalPhone = getText(etPhone);
@@ -153,5 +173,11 @@ public class UserProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
         hideHeaderAndBottomNav();
+    }
+
+    private boolean isUserInfoChanged() {
+        return !getText(etName).equals(originalName)
+                || !getText(etAddress).equals(originalAddress)
+                || !getText(etPhone).equals(originalPhone);
     }
 }

@@ -21,6 +21,7 @@ import com.example.plantshop.R;
 import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Model.User;
 import com.example.plantshop.data.Utils.FormatUtils;
+import com.example.plantshop.data.repository.CheckoutRepository;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -132,9 +133,16 @@ public class CheckoutFragment extends Fragment {
 
         btnEditUserInfo.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
-            navController.navigate(R.id.nav_profile);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("fromCheckout", true);
+            navController.navigate(R.id.nav_profile, bundle);
         });
-        btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
+        btnBack.setOnClickListener(v -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
+            navController.popBackStack(R.id.nav_cart, false);
+        });
     }
 
 }
+
+
