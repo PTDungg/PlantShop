@@ -1,6 +1,5 @@
 package com.example.plantshop.data.repository;
 
-import com.example.plantshop.data.Model.Notification;
 import com.example.plantshop.data.Model.OrderItem;
 import com.example.plantshop.data.Model.User;
 import com.example.plantshop.data.Model.Order;
@@ -15,7 +14,7 @@ public class CheckoutRepository {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final ProductRepository productRepository = new ProductRepository();
-    
+
     public interface PlaceOrderCallback {
         void onSuccess();
         void onFailure(String errorMessage);
@@ -59,19 +58,6 @@ public class CheckoutRepository {
                             .addOnSuccessListener(unused -> {
                                 successCount[0]++;
                                 if (successCount[0] == items.size() && !hasFailed[0]) {
-                                    // Gửi thông báo khi đặt hàng thành công
-                                    String imageUrl = items.isEmpty() ? "" : items.get(0).getImageUrl();
-                                    Notification notification = new Notification(
-                                            db.collection("users").document(user.getEmail()).collection("notifications").document().getId(),
-                                            orderId,
-                                            "Đơn hàng đã được đặt, chờ người bán xác nhận",
-                                            imageUrl,
-                                            new Date()
-                                    );
-                                    db.collection("users").document(user.getEmail())
-                                            .collection("notifications")
-                                            .document(notification.getId())
-                                            .set(notification);
                                     // Cập nhật số lượng sản phẩm và xóa giỏ hàng
                                     updateProductQuantities(items, () -> removeItemsFromCart(items, callback));
                                 }
@@ -86,17 +72,17 @@ public class CheckoutRepository {
                 })
                 .addOnFailureListener(e -> callback.onFailure(e.getMessage()));
     }
-    
+
     private void updateProductQuantities(List<OrderItem> items, Runnable onComplete) {
         if (items == null || items.isEmpty()) {
             onComplete.run();
             return;
         }
-        
+
         final int[] successCount = {0};
         final int[] failureCount = {0};
         final int totalItems = items.size();
-        
+
         for (OrderItem item : items) {
             productRepository.updateProductQuantity(item.getProductId(), item.getQuantity(), new ProductRepository.ProductUpdateCallback() {
                 @Override
@@ -118,23 +104,23 @@ public class CheckoutRepository {
             });
         }
     }
-    
+
     private void removeItemsFromCart(List<OrderItem> items, PlaceOrderCallback callback) {
         if (auth.getCurrentUser() == null) {
             callback.onSuccess();
             return;
         }
-        
+
         String userId = auth.getCurrentUser().getUid();
         if (items == null || items.isEmpty()) {
             callback.onSuccess();
             return;
         }
-        
+
         final int[] successCount = {0};
         final int[] failureCount = {0};
         final int totalItems = items.size();
-        
+
         for (OrderItem item : items) {
             db.collection("users").document(userId)
                 .collection("cart")
