@@ -1,5 +1,6 @@
 package com.example.plantshop.ui.user;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import com.example.plantshop.R;
 import com.example.plantshop.data.Model.Product;
 import com.example.plantshop.ui.admin.ProductAdapter;
 import com.example.plantshop.ui.admin.ProductViewModel;
+import com.example.plantshop.ui.user.ProductDetailActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.Normalizer;
 import java.util.ArrayList;
@@ -77,11 +80,11 @@ public class ListProductFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        // Khởi tạo adapter với danh sách rỗng ban đầu
         productAdapter = new ProductAdapter(new ArrayList<>());
-        productAdapter.setOnItemClickListener(new ProductAdapter.OnItemClickListener() {
-            @Override
-            public void onProductClick(Product product) {
+        productAdapter.setOnItemClickListener(product -> {
+            // Kiểm tra xem có phải user không
+            if (FirebaseAuth.getInstance().getCurrentUser() != null && !FirebaseAuth.getInstance().getCurrentUser().isAnonymous()) {
+                // User: dùng Navigation
                 // Ẩn ViewPager2 và TabLayout, hiện NavHostFragment
                 requireActivity().findViewById(R.id.viewPager).setVisibility(View.GONE);
                 requireActivity().findViewById(R.id.tab_layout).setVisibility(View.GONE);
@@ -91,6 +94,11 @@ public class ListProductFragment extends Fragment {
                 bundle.putString("productId", product.getId());
                 NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_user);
                 navController.navigate(R.id.nav_product_detail, bundle);
+            } else {
+                // Guest: dùng Activity
+                Intent intent = new Intent(getContext(), ProductDetailActivity.class);
+                intent.putExtra("PRODUCT_ID", product.getId());
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(productAdapter);
@@ -141,8 +149,14 @@ public class ListProductFragment extends Fragment {
         super.onResume();
         showHeaderAndBottomNav();
         // Hiện lại tabLayout và viewPager khi về Home
-        requireActivity().findViewById(R.id.tab_layout).setVisibility(View.VISIBLE);
-        requireActivity().findViewById(R.id.viewPager).setVisibility(View.VISIBLE);
-        requireActivity().findViewById(R.id.nav_host_fragment_user).setVisibility(View.GONE);
+        View tabLayout = requireActivity().findViewById(R.id.tab_layout);
+        View viewPager = requireActivity().findViewById(R.id.viewPager);
+        View navHostFragment = requireActivity().findViewById(R.id.nav_host_fragment_user);
+        if (tabLayout != null) tabLayout.setVisibility(View.VISIBLE);
+        if (viewPager != null) viewPager.setVisibility(View.VISIBLE);
+        if (navHostFragment != null) navHostFragment.setVisibility(View.GONE);
     }
 }
+
+
+
